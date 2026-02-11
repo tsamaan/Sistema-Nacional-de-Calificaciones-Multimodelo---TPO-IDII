@@ -1,0 +1,109 @@
+version: "3.9"
+
+services:
+
+  # =========================
+  # MongoDB (RF1)
+  # =========================
+  mongo:
+    image: mongo:7
+    container_name: edugrade-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - edugrade_net
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # =========================
+  # Redis (RF2)
+  # =========================
+  redis:
+    image: redis:7
+    container_name: edugrade-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass redis123
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - edugrade_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redis123", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # =========================
+  # Neo4j (RF3)
+  # =========================
+  neo4j:
+    image: neo4j:5
+    container_name: edugrade-neo4j
+    restart: unless-stopped
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/neo4123
+      NEO4J_server_memory_heap_initial__size: 2G
+      NEO4J_server_memory_heap_max__size: 4G
+    volumes:
+      - neo4j_data:/data
+    networks:
+      - edugrade_net
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "neo4123", "RETURN 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  # =========================
+  # Cassandra (RF4 + RF5)
+  # =========================
+  cassandra:
+    image: cassandra:4
+    container_name: edugrade-cassandra
+    restart: unless-stopped
+    ports:
+      - "9042:9042"
+    environment:
+      CASSANDRA_CLUSTER_NAME: EduGradeCluster
+      CASSANDRA_NUM_TOKENS: 16
+      MAX_HEAP_SIZE: 4G
+      HEAP_NEWSIZE: 800M
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    networks:
+      - edugrade_net
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'DESCRIBE KEYSPACES'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+# =========================
+# Volúmenes persistentes
+# =========================
+volumes:
+  mongo_data:
+  redis_data:
+  neo4j_data:
+  cassandra_data:
+
+# =========================
+# Red interna
+# =========================
+networks:
+  edugrade_net:
+    driver: bridge
