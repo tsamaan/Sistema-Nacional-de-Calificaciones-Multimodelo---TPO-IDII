@@ -71,7 +71,7 @@ services:
       - "7474:7474"
       - "7687:7687"
     environment:
-      NEO4J_AUTH: neo4j/neo4123
+      NEO4J_AUTH: neo4j/Neo4j2026!
       NEO4J_server_memory_heap_initial__size: 2G
       NEO4J_server_memory_heap_max__size: 4G
     volumes:
