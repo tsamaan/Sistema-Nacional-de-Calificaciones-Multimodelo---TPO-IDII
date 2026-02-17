@@ -1,0 +1,30 @@
+Una vez dentro:
+
+Ver keyspaces:
+
+DESCRIBE KEYSPACES;
+
+
+Usar uno:
+
+USE tu_keyspace;
+
+
+Ver tablas:
+
+DESCRIBE TABLES;
+
+
+Ver estructura:
+
+DESCRIBE TABLE nombre_tabla;
+
+
+Ver datos:
+
+SELECT * FROM nombre_tabla;
+
+
+----------------------------------
+
+

@@ -1,0 +1,148 @@
+// ======================
+// EduGrade | MongoDB DDL
+// ======================
+
+db = db.getSiblingDB("edugrade");
+
+// ---------- estudiantes ----------
+try {
+  db.createCollection("estudiantes", {
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["region", "full_name", "documento"],
+        properties: {
+          _id: { bsonType: ["string", "objectId"] },
+          region: { bsonType: "string" },
+          full_name: { bsonType: "string" },
+          documento: {
+            bsonType: "object",
+            required: ["tipo", "numero"],
+            properties: {
+              tipo: { bsonType: "string" },
+              numero: { bsonType: "string" }
+            }
+          },
+          academic_history: {
+            bsonType: "array",
+            items: {
+              bsonType: "object",
+              required: ["country", "instance_type"],
+              properties: {
+                country: { bsonType: "string" },
+                instance_type: { bsonType: "string" },
+                board: { bsonType: "string" },
+                details: { bsonType: "object" }
+              }
+            }
+          },
+          created_at: { bsonType: "date" },
+          updated_at: { bsonType: "date" }
+        }
+      }
+    },
+    validationLevel: "strict",
+    validationAction: "error"
+  });
+} catch (e) {}
+
+db.estudiantes.createIndex(
+  { "documento.tipo": 1, "documento.numero": 1 },
+  { unique: true, name: "uq_estudiantes_documento" }
+);
+db.estudiantes.createIndex({ region: 1 }, { name: "ix_estudiantes_region" });
+
+// ---------- instituciones ----------
+try {
+  db.createCollection("instituciones", {
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["region", "pais", "codigo_sistema", "nombre"],
+        properties: {
+          _id: { bsonType: ["string", "objectId"] },
+          region: { bsonType: "string" },
+          pais: { bsonType: "string" },
+          codigo_sistema: { bsonType: "string" },
+          codigo_externo: { bsonType: "string" },
+          nombre: { bsonType: "string" },
+          metadata: { bsonType: "object" },
+          created_at: { bsonType: "date" },
+          updated_at: { bsonType: "date" }
+        }
+      }
+    },
+    validationLevel: "strict",
+    validationAction: "error"
+  });
+} catch (e) {}
+
+db.instituciones.createIndex(
+  { codigo_sistema: 1, codigo_externo: 1 },
+  { name: "ix_instituciones_codigos" }
+);
+db.instituciones.createIndex({ region: 1 }, { name: "ix_instituciones_region" });
+
+// ---------- materias ----------
+try {
+  db.createCollection("materias", {
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["id_institucion", "nombre"],
+        properties: {
+          _id: { bsonType: ["string", "objectId"] },
+          id_institucion: { bsonType: ["string", "objectId"] },
+          nombre: { bsonType: "string" },
+          codigo_sistema: { bsonType: "string" },
+          codigo_externo: { bsonType: "string" },
+          metadata: { bsonType: "object" },
+          created_at: { bsonType: "date" },
+          updated_at: { bsonType: "date" }
+        }
+      }
+    },
+    validationLevel: "strict",
+    validationAction: "error"
+  });
+} catch (e) {}
+
+db.materias.createIndex(
+  { id_institucion: 1, nombre: 1 },
+  { name: "ix_materias_institucion_nombre" }
+);
+db.materias.createIndex(
+  { codigo_sistema: 1, codigo_externo: 1 },
+  { name: "ix_materias_codigos" }
+);
+
+// ---------- trayectorias ----------
+try {
+  db.createCollection("trayectorias", {
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["id_estudiante", "id_institucion", "fecha_inicio", "estado"],
+        properties: {
+          _id: { bsonType: ["string", "objectId"] },
+          id_estudiante: { bsonType: ["string", "objectId"] },
+          id_institucion: { bsonType: ["string", "objectId"] },
+          fecha_inicio: { bsonType: "date" },
+          fecha_fin: { bsonType: ["date", "null"] },
+          estado: { bsonType: "string" },
+          detalles: { bsonType: "object" },
+          created_at: { bsonType: "date" },
+          updated_at: { bsonType: "date" }
+        }
+      }
+    },
+    validationLevel: "strict",
+    validationAction: "error"
+  });
+} catch (e) {}
+
+db.trayectorias.createIndex(
+  { id_estudiante: 1, fecha_inicio: -1 },
+  { name: "ix_trayectorias_estudiante_fecha" }
+);
+db.trayectorias.crea

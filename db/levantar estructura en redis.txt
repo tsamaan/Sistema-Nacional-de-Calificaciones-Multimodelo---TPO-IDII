@@ -1,0 +1,101 @@
+HSET regla:AR#ZA7:MINISTERIO:SECUNDARIO:2025:1 from AR to ZA7 version 1 organismo MINISTERIO nivel SECUNDARIO anio 2025 metodo tabla vigencia_desde 2025-01-01 vigencia_hasta 2025-12-31 mapping "{\"REEMPLAZAR\":\"AR->ZA7\"}"
+
+SET regla_activa:AR#ZA7:MINISTERIO:SECUNDARIO:2025 1
+
+--------
+
+HSET regla:US#ZA7:MINISTERIO:SECUNDARIO:2025:1 from US to ZA7 version 1 organismo MINISTERIO nivel SECUNDARIO anio 2025 metodo tabla vigencia_desde 2025-01-01 vigencia_hasta 2025-12-31 mapping "{\"REEMPLAZAR\":\"US->ZA7\"}"
+
+SET regla_activa:US#ZA7:MINISTERIO:SECUNDARIO:2025 1
+
+--------
+
+HSET regla:DE#ZA7:MINISTERIO:SECUNDARIO:2025:1 from DE to ZA7 version 1 organismo MINISTERIO nivel SECUNDARIO anio 2025 metodo tabla vigencia_desde 2025-01-01 vigencia_hasta 2025-12-31 mapping "{\"REEMPLAZAR\":\"DE->ZA7\"}"
+
+SET regla_activa:DE#ZA7:MINISTERIO:SECUNDARIO:2025 1
+
+--------
+
+HSET regla:UK#ZA7:MINISTERIO:SECUNDARIO:2025:1 from UK to ZA7 version 1 organismo MINISTERIO nivel SECUNDARIO anio 2025 metodo tabla vigencia_desde 2025-01-01 vigencia_hasta 2025-12-31 mapping "{\"REEMPLAZAR\":\"UK->ZA7\"}"
+
+SET regla_activa:UK#ZA7:MINISTERIO:SECUNDARIO:2025 1
+
+
+----
+
+SETEX conv:grd_000001:ZA7:1 86400 "{\"za_1_7\":6,\"src\":{\"pais\":\"UK\",\"valor\":\"B\"},\"regla_version\":1}"
+
+
+
+-----------------------
+
+Así es el flujo completo, usando tu funnel AR/US/DE/UK → ZA7 (1–7).
+
+1) Alta y almacenamiento “oficial” en MongoDB (RF1)
+
+Se guarda la calificación original en MongoDB con confirmación de mayoría. 
+
+Documentación técnica - EduGr…
+
+Si hay corrección, no se pisa la nota: se crea una nueva calificación (nueva versión) referenciando la anterior. 
+
+Documentación técnica - EduGr…
+
+Resultado: MongoDB queda como fuente de verdad y el dato original se mantiene inmutable.
+
+2) Pedido de conversión a ZA7 (RF2)
+
+Esto normalmente pasa cuando tu backend recibe un request tipo “convertir esta calificación a ZA7”.
+
+Paso A: elegir qué regla aplicar
+
+El servicio identifica from (AR/US/DE/UK), to=ZA7, organismo, nivel, anio.
+
+Lee el puntero de versión activa: GET regla_activa:{from}#ZA7:{organismo}:{nivel}:{anio} para obtener version. 
+
+Documentación técnica - EduGr…
+
+
+(En el doc, esta es la primera operación del circuito RF2).
+
+Si además querés “por fecha de vigencia”, la versión se elige según vigencia_desde/hasta (tu backend filtra por ventana). El doc lo plantea como listar versiones y validar por fecha. 
+
+Documentación técnica - EduGr…
+
+Paso B: cache de conversión (sin tocar el original)
+
+Busca el resultado ya convertido en Redis: GET conv:{id_calificacion}:ZA7:{version}. 
+
+Documentación técnica - EduGr…
+
+Si hay cache hit, devolvés eso y listo.
+
+Paso C: cache miss, calcular y cachear con TTL
+
+Si hay cache miss, lee la regla completa: HGETALL regla:{from}#ZA7:{organismo}:{nivel}:{anio}:{version}. 
+
+Documentación técnica - EduGr…
+
+Calcula la conversión (según mapping y metodo).
+
+Guarda el resultado en Redis con TTL: SETEX conv:{id}:ZA7:{version} <ttl> <json>. 
+
+Documentación técnica - EduGr…
+
+3) Persistencia de la conversión en MongoDB (sin modificar la nota)
+
+El servicio guarda en MongoDB la conversión aplicada en conversiones[], registrando al menos to=ZA7, version, y el resultado. 
+
+Documentación técnica - EduGr…
+
+Clave: no se modifica el campo de la nota original, solo se agrega un registro de conversión (derivado).
+
+4) Qué pasa cuando cambia la regla
+
+Publicás una nueva versión de regla:* y actualizás regla_activa:* para que apunte a esa versión. 
+
+Documentación técnica - EduGr…
+
+Las conversiones cacheadas viejas quedan con su key conv:*:ZA7:<version_anterior> y expiran por TTL.
+
+Las nuevas conversiones usan la key con la nueva versión, entonces no hay mezcla de criterios

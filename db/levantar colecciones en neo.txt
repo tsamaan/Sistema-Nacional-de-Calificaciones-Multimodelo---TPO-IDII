@@ -1,0 +1,20 @@
+CREATE CONSTRAINT id_estudiante_unico IF NOT EXISTS
+FOR (e:Estudiante) REQUIRE e.id_estudiante IS UNIQUE;
+
+CREATE CONSTRAINT id_institucion_unico IF NOT EXISTS
+FOR (i:Institucion) REQUIRE i.id_institucion IS UNIQUE;
+
+CREATE CONSTRAINT id_materia_unico IF NOT EXISTS
+FOR (m:Materia) REQUIRE m.id_materia IS UNIQUE;
+
+CREATE INDEX institucion_geo IF NOT EXISTS
+FOR (i:Institucion) ON (i.pais, i.region);
+
+CREATE INDEX materia_lookup IF NOT EXISTS
+FOR (m:Materia) ON (m.codigo_sistema, m.nivel);
+
+CREATE INDEX materia_nombre IF NOT EXISTS
+FOR (m:Materia) ON (m.nombre);
+
+CREATE INDEX equiv_filtros IF NOT EXISTS
+FOR ()-[r:EQUIVALENTE_A]-() ON (r.organismo, r.version_regla, r.vigente_desde, r.vigente_hasta, r.tipo);
