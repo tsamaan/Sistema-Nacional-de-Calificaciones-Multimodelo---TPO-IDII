@@ -28,3 +28,48 @@ SELECT * FROM nombre_tabla;
 ----------------------------------
 
 
+-- (Opcional) Para ver más claro errores/consistencia en cqlsh
+CONSISTENCY ONE;
+
+-- 1) KEYSPACES
+CREATE KEYSPACE IF NOT EXISTS edugrade_analitica
+WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
+CREATE KEYSPACE IF NOT EXISTS edugrade_auditoria
+WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
+-- 2) TABLAS
+
+-- RF4: Analítica (agregados)
+CREATE TABLE IF NOT EXISTS edugrade_analitica.promedio_por_region_anio (
+  region text,
+  anio int,
+  codigo_sistema text,
+  id_materia text,
+  id_institucion text,
+  n bigint,
+  suma double,
+  suma_cuadrados double,
+  actualizado_en timestamp,
+  PRIMARY KEY ((region, anio), codigo_sistema, id_materia, id_institucion)
+) WITH CLUSTERING ORDER BY (codigo_sistema ASC, id_materia ASC, id_institucion ASC);
+
+-- RF5: Auditoría (append-only por entidad/mes)
+CREATE TABLE IF NOT EXISTS edugrade_auditoria.registro_auditoria_por_entidad_mes (
+  id_entidad text,
+  aaaamm text,
+  marca_tiempo timestamp,
+  tipo_entidad text,
+  accion text,
+  id_actor text,
+  ip text,
+  hash_anterior text,
+  hash_nuevo text,
+  carga_util text,
+  PRIMARY KEY ((id_entidad, aaaamm), marca_tiempo)
+) WITH CLUSTERING ORDER BY (marca_tiempo DESC);
+
+-- 3) VERIFICACIÓN (schema)
+DESCRIBE KEYSPACES;
+DESCRIBE TABLE edugrade_analitica.promedio_por_region_anio;
+DESCRIBE TABLE edugrade_auditoria.registro_auditoria_por_entidad_mes;
