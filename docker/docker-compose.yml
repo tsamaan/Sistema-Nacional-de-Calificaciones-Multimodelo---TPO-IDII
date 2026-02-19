@@ -79,7 +79,7 @@ services:
     networks:
       - edugrade_net
     healthcheck:
-      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "neo4123", "RETURN 1"]
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "Neo4j2026!", "RETURN 1"]
       interval: 15s
       timeout: 10s
       retries: 5
