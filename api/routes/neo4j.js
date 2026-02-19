@@ -9,56 +9,72 @@ const driver = neo4j.driver(
 
 driver.getServerInfo().then(() => {
   console.log('✅ Neo4j conectado');
+}).catch(err => {
+  console.error('❌ Error conectando a Neo4j:', err);
 });
 
 /**
- * RF3 - Consulta 1 (Operativa): Camino de equivalencias
- * GET /api/neo4j/camino-equivalencias?estudianteId=STU-0001&paisOrigen=UK&paisDestino=ZA
+ * RF3 - Consulta 1: Buscar equivalencias entre materias
+ * GET /api/neo4j/equivalencias?materia_origen=Math101_US&pais_destino=AR
  */
-router.get('/camino-equivalencias', async (req, res) => {
+router.get('/equivalencias', async (req, res) => {
   const session = driver.session();
   try {
-    const { estudianteId, paisOrigen, paisDestino } = req.query;
+    const { materia_origen, pais_destino } = req.query;
     
-    if (!estudianteId || !paisOrigen || !paisDestino) {
+    if (!materia_origen || !pais_destino) {
       return res.status(400).json({ 
-        error: 'Parámetros requeridos: estudianteId, paisOrigen, paisDestino' 
+        error: 'Parámetros requeridos: materia_origen, pais_destino' 
       });
     }
 
     const query = `
-      MATCH (e:Student {student_id: $estudianteId})
-      MATCH (e)-[:HAS_RECORD]->(gr:GradeRecord)-[:FOR_SUBJECT]->(m:Subject)
-      MATCH path = shortestPath((m)-[:EQUIVALENT_TO*1..5]-(m2:Subject))
-      WHERE m2.system = $paisDestino
-      RETURN m.name as materia_origen, 
-             m.system as sistema_origen,
-             m2.name as materia_destino,
-             m2.system as pais_destino,
-             length(path) as distancia,
-             [node in nodes(path) | node.name] as ruta
-      ORDER BY distancia
-      LIMIT 10
+      MATCH (m1:Materia {id_materia: $materia_origen})
+      MATCH (m1)-[e:EQUIVALENTE_A]-(m2:Materia)
+      WHERE m2.pais = $pais_destino
+      RETURN m1.id_materia as origen_id,
+             m1.nombre as origen_nombre,
+             m1.pais as origen_pais,
+             m2.id_materia as destino_id,
+             m2.nombre as destino_nombre,
+             m2.pais as destino_pais,
+             e.organismo as organismo,
+             e.tipo as tipo_equivalencia,
+             e.vigente_desde as vigente_desde,
+             e.vigente_hasta as vigente_hasta,
+             e.version_regla as version
     `;
 
     const result = await session.run(query, {
-      estudianteId,
-      paisDestino
+      materia_origen,
+      pais_destino
     });
 
-    const caminos = result.records.map(record => ({
-      materia_origen: record.get('materia_origen'),
-      sistema_origen: record.get('sistema_origen'),
-      materia_destino: record.get('materia_destino'),
-      pais_destino: record.get('pais_destino'),
-      distancia: record.get('distancia').toNumber(),
-      ruta: record.get('ruta')
+    const equivalencias = result.records.map(record => ({
+      origen: {
+        id: record.get('origen_id'),
+        nombre: record.get('origen_nombre'),
+        pais: record.get('origen_pais')
+      },
+      destino: {
+        id: record.get('destino_id'),
+        nombre: record.get('destino_nombre'),
+        pais: record.get('destino_pais')
+      },
+      relacion: {
+        organismo: record.get('organismo'),
+        tipo: record.get('tipo_equivalencia'),
+        vigente_desde: record.get('vigente_desde'),
+        vigente_hasta: record.get('vigente_hasta'),
+        version: record.get('version')
+      }
     }));
 
     res.json({
-      estudiante: estudianteId,
-      caminos_encontrados: caminos.length,
-      caminos
+      materia_origen,
+      pais_destino,
+      equivalencias_encontradas: equivalencias.length,
+      equivalencias
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -68,57 +84,93 @@ router.get('/camino-equivalencias', async (req, res) => {
 });
 
 /**
- * RF3 - Consulta 2 (Potencia): Análisis de impacto
- * GET /api/neo4j/analisis-impacto?materiaId=SUB-MATH
+ * RF3 - Consulta 2: Historial de notas de un estudiante con materias
+ * GET /api/neo4j/estudiante/:id/notas
  */
-router.get('/analisis-impacto', async (req, res) => {
+router.get('/estudiante/:id/notas', async (req, res) => {
   const session = driver.session();
   try {
-    const { materiaId } = req.query;
-    
-    if (!materiaId) {
-      return res.status(400).json({ 
-        error: 'Parámetro requerido: materiaId' 
-      });
-    }
+    const { id } = req.params;
 
     const query = `
-      MATCH (m:Subject {subject_id: $materiaId})
-      MATCH (m)-[:PREREQUISITE_FOR*1..3]->(materias_afectadas)
-      RETURN DISTINCT materias_afectadas.name as materia,
-             materias_afectadas.subject_id as id,
-             labels(materias_afectadas)[0] as tipo
-      
-      UNION
-      
-      MATCH (m:Subject {subject_id: $materiaId})
-      MATCH (m)-[:EQUIVALENT_TO]-(equivalentes)
-      RETURN DISTINCT equivalentes.name as materia,
-             equivalentes.subject_id as id,
-             labels(equivalentes)[0] as tipo
-      
-      UNION
-      
-      MATCH (m:Subject {subject_id: $materiaId})
-      MATCH (gr:GradeRecord)-[:FOR_SUBJECT]->(m)
-      MATCH (estudiantes:Student)-[:HAS_RECORD]->(gr)
-      RETURN DISTINCT estudiantes.full_name as materia,
-             estudiantes.student_id as id,
-             'Estudiante Afectado' as tipo
+      MATCH (e:Estudiante {id_estudiante: $id})
+      OPTIONAL MATCH (e)-[:CURSO]->(i:Institucion)
+      OPTIONAL MATCH (e)-[:OBTUVO]->(gr:GradeRecord)-[:EN_MATERIA]->(m:Materia)
+      RETURN e.id_estudiante as estudiante_id,
+             e.nombre as estudiante_nombre,
+             collect(DISTINCT {
+               record_id: gr.id_record,
+               materia_id: m.id_materia,
+               materia_nombre: m.nombre,
+               sistema: gr.sistema,
+               valor: gr.valor
+             }) as notas,
+             i.nombre as institucion
     `;
 
-    const result = await session.run(query, { materiaId });
+    const result = await session.run(query, { id });
 
-    const impactos = result.records.map(record => ({
-      elemento: record.get('materia'),
-      id: record.get('id'),
-      tipo: record.get('tipo')
-    }));
+    if (result.records.length === 0) {
+      return res.status(404).json({ error: 'Estudiante no encontrado en el grafo' });
+    }
+
+    const record = result.records[0];
+    
+    res.json({
+      estudiante: {
+        id: record.get('estudiante_id'),
+        nombre: record.get('estudiante_nombre'),
+        institucion: record.get('institucion')
+      },
+      total_notas: record.get('notas').length,
+      notas: record.get('notas').filter(n => n.record_id !== null)
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } finally {
+    await session.close();
+  }
+});
+
+/**
+ * RF3 - Consulta 3: Buscar prerequisitos de una materia
+ * GET /api/neo4j/materia/:id/prerequisitos
+ */
+router.get('/materia/:id/prerequisitos', async (req, res) => {
+  const session = driver.session();
+  try {
+    const { id } = req.params;
+
+    const query = `
+      MATCH (m:Materia {id_materia: $id})
+      OPTIONAL MATCH (prereq:Materia)-[:PREREQUISITO_DE]->(m)
+      RETURN m.id_materia as materia_id,
+             m.nombre as materia_nombre,
+             m.nivel as nivel,
+             collect(DISTINCT {
+               id: prereq.id_materia,
+               nombre: prereq.nombre,
+               nivel: prereq.nivel
+             }) as prerequisitos
+    `;
+
+    const result = await session.run(query, { id });
+
+    if (result.records.length === 0) {
+      return res.status(404).json({ error: 'Materia no encontrada en el grafo' });
+    }
+
+    const record = result.records[0];
+    const prereqs = record.get('prerequisitos').filter(p => p.id !== null);
 
     res.json({
-      materia_analizada: materiaId,
-      total_afectados: impactos.length,
-      elementos_afectados: impactos
+      materia: {
+        id: record.get('materia_id'),
+        nombre: record.get('materia_nombre'),
+        nivel: record.get('nivel')
+      },
+      prerequisitos: prereqs,
+      total_prerequisitos: prereqs.length
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -134,25 +186,40 @@ router.get('/analisis-impacto', async (req, res) => {
 router.get('/stats', async (req, res) => {
   const session = driver.session();
   try {
-    const query = `
+    // Contar nodos por tipo
+    const nodesQuery = `
       MATCH (n)
       RETURN labels(n)[0] as tipo, count(*) as cantidad
       ORDER BY cantidad DESC
     `;
 
-    const result = await session.run(query);
-    const stats = result.records.map(record => ({
+    const nodesResult = await session.run(nodesQuery);
+    const nodos = nodesResult.records.map(record => ({
       tipo: record.get('tipo'),
       cantidad: record.get('cantidad').toNumber()
     }));
 
-    const relQuery = `MATCH ()-[r]->() RETURN count(r) as total`;
-    const relResult = await session.run(relQuery);
-    const totalRelaciones = relResult.records[0].get('total').toNumber();
+    // Contar relaciones por tipo
+    const relsQuery = `
+      MATCH ()-[r]->()
+      RETURN type(r) as tipo, count(*) as cantidad
+      ORDER BY cantidad DESC
+    `;
+
+    const relsResult = await session.run(relsQuery);
+    const relaciones = relsResult.records.map(record => ({
+      tipo: record.get('tipo'),
+      cantidad: record.get('cantidad').toNumber()
+    }));
+
+    const totalRelaciones = relaciones.reduce((sum, r) => sum + r.cantidad, 0);
+    const totalNodos = nodos.reduce((sum, n) => sum + n.cantidad, 0);
 
     res.json({
-      nodos_por_tipo: stats,
-      total_relaciones: totalRelaciones
+      total_nodos: totalNodos,
+      total_relaciones: totalRelaciones,
+      nodos_por_tipo: nodos,
+      relaciones_por_tipo: relaciones
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

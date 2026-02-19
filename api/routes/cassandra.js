@@ -4,79 +4,81 @@ const router = express.Router();
 
 const client = new cassandra.Client({
   contactPoints: [process.env.CASSANDRA_HOSTS],
-  localDataCenter: process.env.CASSANDRA_DATACENTER,
-  keyspace: process.env.CASSANDRA_KEYSPACE
+  localDataCenter: process.env.CASSANDRA_DATACENTER
 });
 
 client.connect().then(() => {
   console.log('✅ Cassandra conectado');
+}).catch(err => {
+  console.error('❌ Error conectando a Cassandra:', err);
 });
 
 /**
- * RF4 - Consulta 1 (Operativa): Reporte regional
- * GET /api/cassandra/reporte-regional?region=ZA-PTA&year=2025
+ * RF4 - Consulta 1: Promedio por región y año
+ * GET /api/cassandra/analitica/promedio?region=AR-BA&anio=2025&sistema=AR
  */
-router.get('/reporte-regional', async (req, res) => {
+router.get('/analitica/promedio', async (req, res) => {
   try {
-    const { region, year, system } = req.query;
+    const { region, anio, sistema } = req.query;
     
-    if (!region || !year) {
+    if (!region || !anio) {
       return res.status(400).json({ 
-        error: 'Parámetros requeridos: region, year. Opcional: system' 
+        error: 'Parámetros requeridos: region, anio. Opcional: sistema' 
       });
     }
 
     let query, params;
     
-    if (system) {
-      // Query específica por sistema
+    if (sistema) {
       query = `
-        SELECT * FROM rf4_fact_grades_by_region_year_system
-        WHERE region = ? AND academic_year = ? AND system = ?
+        SELECT * FROM edugrade_analitica.promedio_por_region_anio
+        WHERE region = ? AND anio = ? AND codigo_sistema = ?
       `;
-      params = [region, parseInt(year), system];
+      params = [region, parseInt(anio), sistema];
     } else {
-      // Query solo por región y año (más amplia pero menos óptima)
       query = `
-        SELECT * FROM rf4_report_by_region_year
-        WHERE region = ? AND academic_year = ?
+        SELECT * FROM edugrade_analitica.promedio_por_region_anio
+        WHERE region = ? AND anio = ?
       `;
-      params = [region, parseInt(year)];
+      params = [region, parseInt(anio)];
     }
 
     const result = await client.execute(query, params, { prepare: true });
     
-    // Calcular estadísticas
-    let totalCalificaciones = 0;
-    let sumaNotas = 0;
+    // Calcular estadísticas agregadas
+    let total_n = 0;
+    let suma_total = 0;
     
-    result.rows.forEach(row => {
-      if (row.n_records) {
-        totalCalificaciones += row.n_records;
-        sumaNotas += row.avg_norm_0_100 * row.n_records;
-      } else {
-        totalCalificaciones++;
-        sumaNotas += row.grade_norm_0_100;
-      }
+    const registros = result.rows.map(row => {
+      const n = parseInt(row.n) || 0;
+      const suma = parseFloat(row.suma) || 0;
+      const avg = n > 0 ? (suma / n).toFixed(2) : 0;
+      
+      total_n += n;
+      suma_total += suma;
+      
+      return {
+        region: row.region,
+        anio: row.anio,
+        codigo_sistema: row.codigo_sistema,
+        id_materia: row.id_materia,
+        id_institucion: row.id_institucion,
+        cantidad_notas: n,
+        suma: suma,
+        suma_cuadrados: parseFloat(row.suma_cuadrados) || 0,
+        promedio: parseFloat(avg),
+        actualizado_en: row.actualizado_en
+      };
     });
 
-    const promedioGeneral = totalCalificaciones > 0 
-      ? (sumaNotas / totalCalificaciones).toFixed(2) 
-      : 0;
+    const promedio_general = total_n > 0 ? (suma_total / total_n).toFixed(2) : 0;
 
     res.json({
-      filtros: { region, year, system: system || 'todos' },
+      filtros: { region, anio: parseInt(anio), sistema: sistema || 'todos' },
       total_registros: result.rows.length,
-      promedio_general: parseFloat(promedioGeneral),
-      datos: result.rows.map(row => ({
-        institution_id: row.institution_id,
-        subject_id: row.subject_id,
-        system: row.system,
-        avg_norm: row.avg_norm_0_100 || row.grade_norm_0_100,
-        n_records: row.n_records || 1,
-        pass_rate: row.pass_rate,
-        event_ts: row.event_ts
-      }))
+      total_calificaciones: total_n,
+      promedio_general_za7: parseFloat(promedio_general),
+      registros
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -84,42 +86,43 @@ router.get('/reporte-regional', async (req, res) => {
 });
 
 /**
- * RF5 - Consulta 2 (Potencia): Trazabilidad de auditoría
- * GET /api/cassandra/auditoria-nota?recordId=GR-2025-0001&mes=2026-02
+ * RF5 - Consulta 2: Auditoría por entidad y mes
+ * GET /api/cassandra/auditoria?id_entidad=grd_000001&aaaamm=202501
  */
-router.get('/auditoria-nota', async (req, res) => {
+router.get('/auditoria', async (req, res) => {
   try {
-    const { recordId, mes } = req.query;
+    const { id_entidad, aaaamm } = req.query;
     
-    if (!recordId || !mes) {
+    if (!id_entidad || !aaaamm) {
       return res.status(400).json({ 
-        error: 'Parámetros requeridos: recordId (ej: GR-2025-0001), mes (ej: 2026-02)' 
+        error: 'Parámetros requeridos: id_entidad (ej: grd_000001), aaaamm (ej: 202501)' 
       });
     }
 
-    const entityId = `NOTE#${recordId}`;
-    
     const query = `
-      SELECT * FROM rf5_audit_timeline_by_entity_month
-      WHERE entity_id = ? AND month_bucket = ?
-      ORDER BY ts DESC
+      SELECT * FROM edugrade_auditoria.registro_auditoria_por_entidad_mes
+      WHERE id_entidad = ? AND aaaamm = ?
+      ORDER BY marca_tiempo DESC
     `;
 
-    const result = await client.execute(query, [entityId, mes], { prepare: true });
+    const result = await client.execute(query, [id_entidad, aaaamm], { prepare: true });
 
     const eventos = result.rows.map(row => ({
-      timestamp: row.ts,
-      event_type: row.event_type,
-      actor: row.actor,
+      id_entidad: row.id_entidad,
+      mes: row.aaaamm,
+      timestamp: row.marca_tiempo,
+      tipo_entidad: row.tipo_entidad,
+      accion: row.accion,
+      actor: row.id_actor,
       ip: row.ip,
-      record_id: row.record_id,
-      details: row.details_json ? JSON.parse(row.details_json) : null,
-      integrity_hash: row.integrity_hash_sha256
+      hash_anterior: row.hash_anterior,
+      hash_nuevo: row.hash_nuevo,
+      payload: row.carga_util ? JSON.parse(row.carga_util) : null
     }));
 
     res.json({
-      entity_id: entityId,
-      mes_consultado: mes,
+      id_entidad,
+      mes: aaaamm,
       total_eventos: eventos.length,
       eventos
     });
@@ -129,39 +132,39 @@ router.get('/auditoria-nota', async (req, res) => {
 });
 
 /**
- * Obtener reportes agregados por región y año
- * GET /api/cassandra/reportes?region=ZA-CPT&year=2025
+ * Obtener todas las keys de analítica (útil para testing)
+ * GET /api/cassandra/analitica/keys?region=AR-BA&anio=2025
  */
-router.get('/reportes', async (req, res) => {
+router.get('/analitica/keys', async (req, res) => {
   try {
-    const { region, year } = req.query;
+    const { region, anio } = req.query;
     
-    if (!region || !year) {
+    if (!region || !anio) {
       return res.status(400).json({ 
-        error: 'Parámetros requeridos: region, year' 
+        error: 'Parámetros requeridos: region, anio' 
       });
     }
 
     const query = `
-      SELECT * FROM rf4_report_by_region_year_system
-      WHERE region = ? AND academic_year = ?
+      SELECT region, anio, codigo_sistema, id_materia, id_institucion, n, actualizado_en
+      FROM edugrade_analitica.promedio_por_region_anio
+      WHERE region = ? AND anio = ?
     `;
 
-    const result = await client.execute(query, [region, parseInt(year)], { prepare: true });
+    const result = await client.execute(query, [region, parseInt(anio)], { prepare: true });
 
     res.json({
       region,
-      year: parseInt(year),
-      reportes: result.rows.map(row => ({
-        system: row.system,
-        institution_id: row.institution_id,
-        subject_id: row.subject_id,
-        n_records: row.n_records,
-        avg_norm_0_100: row.avg_norm_0_100,
-        min_norm_0_100: row.min_norm_0_100,
-        max_norm_0_100: row.max_norm_0_100,
-        pass_rate: row.pass_rate,
-        updated_at: row.updated_at
+      anio: parseInt(anio),
+      total_keys: result.rows.length,
+      keys: result.rows.map(row => ({
+        region: row.region,
+        anio: row.anio,
+        sistema: row.codigo_sistema,
+        materia: row.id_materia,
+        institucion: row.id_institucion,
+        cantidad_registros: parseInt(row.n) || 0,
+        ultima_actualizacion: row.actualizado_en
       }))
     });
   } catch (error) {
