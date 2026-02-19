@@ -1,0 +1,303 @@
+{
+  "info": {
+    "name": "EduGrade Global - Multimodelo",
+    "description": "Colección de consultas para el Sistema Nacional de Calificaciones Multimodelo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "MongoDB (RF1)",
+      "item": [
+        {
+          "name": "Consulta 1 - Ficha Completa Estudiante",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/mongodb/estudiante/STU-0006/ficha-completa",
+              "host": ["{{base_url}}"],
+              "path": ["api", "mongodb", "estudiante", "STU-0006", "ficha-completa"]
+            },
+            "description": "Obtener todo el historial de materias de un alumno en una sola lectura (embedding)"
+          }
+        },
+        {
+          "name": "Consulta 2 - Filtro por Metadata (Argentina - Recuperación)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/mongodb/buscar-por-metadata?pais=AR&tipo=recuperacion",
+              "host": ["{{base_url}}"],
+              "path": ["api", "mongodb", "buscar-por-metadata"],
+              "query": [
+                {"key": "pais", "value": "AR"},
+                {"key": "tipo", "value": "recuperacion"}
+              ]
+            },
+            "description": "Buscar alumnos que tengan una instancia de recuperación en Argentina"
+          }
+        },
+        {
+          "name": "Consulta 2 - Filtro por Metadata (UK - Board)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/mongodb/buscar-por-metadata?pais=UK&board=IEB",
+              "host": ["{{base_url}}"],
+              "path": ["api", "mongodb", "buscar-por-metadata"],
+              "query": [
+                {"key": "pais", "value": "UK"},
+                {"key": "board", "value": "IEB"}
+              ]
+            },
+            "description": "Buscar alumnos con un board específico en UK"
+          }
+        },
+        {
+          "name": "Listar Todas las Calificaciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/mongodb/calificaciones",
+              "host": ["{{base_url}}"],
+              "path": ["api", "mongodb", "calificaciones"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Redis (RF2)",
+      "item": [
+        {
+          "name": "Consulta 1 - Regla Activa (UK -> US)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/redis/regla-activa?from=UK&to=US",
+              "host": ["{{base_url}}"],
+              "path": ["api", "redis", "regla-activa"],
+              "query": [
+                {"key": "from", "value": "UK"},
+                {"key": "to", "value": "US"}
+              ]
+            },
+            "description": "Obtener la regla de conversión activa con latencia sub-milisegundo"
+          }
+        },
+        {
+          "name": "Consulta 1 - Regla Activa (AR -> US)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/redis/regla-activa?from=AR&to=US",
+              "host": ["{{base_url}}"],
+              "path": ["api", "redis", "regla-activa"],
+              "query": [
+                {"key": "from", "value": "AR"},
+                {"key": "to", "value": "US"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulta 2 - Validación por Fecha (2025)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/redis/regla-por-fecha?from=UK&to=US&org=MINEDU_ZA&fecha=2025-06-15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "redis", "regla-por-fecha"],
+              "query": [
+                {"key": "from", "value": "UK"},
+                {"key": "to", "value": "US"},
+                {"key": "org", "value": "MINEDU_ZA"},
+                {"key": "fecha", "value": "2025-06-15"}
+              ]
+            },
+            "description": "Recuperar la fórmula matemática exacta según la fecha de la nota"
+          }
+        },
+        {
+          "name": "Consulta 2 - Validación por Fecha (2026)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/redis/regla-por-fecha?from=UK&to=US&org=MINEDU_ZA&fecha=2026-06-15",
+              "host": ["{{base_url}}"],
+              "path": ["api", "redis", "regla-por-fecha"],
+              "query": [
+                {"key": "from", "value": "UK"},
+                {"key": "to", "value": "US"},
+                {"key": "org", "value": "MINEDU_ZA"},
+                {"key": "fecha", "value": "2026-06-15"}
+              ]
+            },
+            "description": "Debe retornar versión v2026-01 por la fecha"
+          }
+        },
+        {
+          "name": "Listar Todas las Reglas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/redis/reglas",
+              "host": ["{{base_url}}"],
+              "path": ["api", "redis", "reglas"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Neo4j (RF3)",
+      "item": [
+        {
+          "name": "Consulta 1 - Camino de Equivalencias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/neo4j/camino-equivalencias?estudianteId=STU-0001&paisOrigen=UK&paisDestino=ZA",
+              "host": ["{{base_url}}"],
+              "path": ["api", "neo4j", "camino-equivalencias"],
+              "query": [
+                {"key": "estudianteId", "value": "STU-0001"},
+                {"key": "paisOrigen", "value": "UK"},
+                {"key": "paisDestino", "value": "ZA"}
+              ]
+            },
+            "description": "Encontrar la ruta más corta de materias para obtener título en otro país"
+          }
+        },
+        {
+          "name": "Consulta 2 - Análisis de Impacto",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/neo4j/analisis-impacto?materiaId=SUB-MATH",
+              "host": ["{{base_url}}"],
+              "path": ["api", "neo4j", "analisis-impacto"],
+              "query": [
+                {"key": "materiaId", "value": "SUB-MATH"}
+              ]
+            },
+            "description": "Qué materias se ven afectadas si cambian los requisitos de una materia troncal"
+          }
+        },
+        {
+          "name": "Estadísticas del Grafo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/neo4j/stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "neo4j", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cassandra (RF4/RF5)",
+      "item": [
+        {
+          "name": "Consulta 1 - Reporte Regional (Pretoria 2025)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cassandra/reporte-regional?region=ZA-PTA&year=2025",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cassandra", "reporte-regional"],
+              "query": [
+                {"key": "region", "value": "ZA-PTA"},
+                {"key": "year", "value": "2025"}
+              ]
+            },
+            "description": "Obtener promedio de notas de Pretoria para 2025 (usando Partition Key)"
+          }
+        },
+        {
+          "name": "Consulta 1 - Reporte Regional con Sistema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cassandra/reporte-regional?region=ZA-PTA&year=2025&system=UK",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cassandra", "reporte-regional"],
+              "query": [
+                {"key": "region", "value": "ZA-PTA"},
+                {"key": "year", "value": "2025"},
+                {"key": "system", "value": "UK"}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consulta 2 - Trazabilidad de Auditoría",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cassandra/auditoria-nota?recordId=GR-2025-0001&mes=2026-02",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cassandra", "auditoria-nota"],
+              "query": [
+                {"key": "recordId", "value": "GR-2025-0001"},
+                {"key": "mes", "value": "2026-02"}
+              ]
+            },
+            "description": "Listar todos los cambios sobre una nota durante el último mes"
+          }
+        },
+        {
+          "name": "Reportes Agregados",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/cassandra/reportes?region=ZA-CPT&year=2025",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cassandra", "reportes"],
+              "query": [
+                {"key": "region", "value": "ZA-CPT"},
+                {"key": "year", "value": "2025"}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": [""]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
