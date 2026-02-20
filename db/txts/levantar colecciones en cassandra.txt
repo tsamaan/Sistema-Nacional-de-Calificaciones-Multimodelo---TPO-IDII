@@ -26,22 +26,77 @@ SELECT * FROM nombre_tabla;
 
 
 ----------------------------------
+-- ESTRUCTURA CONSOLIDADA (v2.0)
+-- Solo 2 keyspaces: edugrade_analitica (RF4) y edugrade_auditoria (RF5)
+----------------------------------
 
+-- (Opcional) Limpiar keyspaces antiguos
+DROP KEYSPACE IF EXISTS edugrade;
+DROP KEYSPACE IF EXISTS edugrade_analitica;
+DROP KEYSPACE IF EXISTS edugrade_auditoria;
 
 -- (Opcional) Para ver más claro errores/consistencia en cqlsh
 CONSISTENCY ONE;
 
--- 1) KEYSPACES
+-- ============================================================================
+-- 1) KEYSPACE: edugrade_analitica (RF4 - Analítica)
+-- ============================================================================
+
 CREATE KEYSPACE IF NOT EXISTS edugrade_analitica
 WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
 
-CREATE KEYSPACE IF NOT EXISTS edugrade_auditoria
-WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+USE edugrade_analitica;
 
--- 2) TABLAS
+-- RF4: Analítica - Fact table dimensional
+CREATE TABLE IF NOT EXISTS rf4_fact_grades_by_region_year_system (
+  region text,
+  academic_year int,
+  system text,
+  institution_id text,
+  subject_id text,
+  event_ts timestamp,
+  record_id text,
+  student_id text,
+  grade_raw text,
+  grade_norm_0_100 double,
+  passed boolean,
+  PRIMARY KEY ((region, academic_year, system), institution_id, subject_id, event_ts, record_id)
+) WITH CLUSTERING ORDER BY (institution_id ASC, subject_id ASC, event_ts DESC, record_id ASC);
 
--- RF4: Analítica (agregados)
-CREATE TABLE IF NOT EXISTS edugrade_analitica.promedio_por_region_anio (
+-- RF4: Reportes agregados por sistema
+CREATE TABLE IF NOT EXISTS rf4_report_by_region_year_system (
+  region text,
+  academic_year int,
+  system text,
+  institution_id text,
+  subject_id text,
+  n_records int,
+  avg_norm_0_100 double,
+  min_norm_0_100 double,
+  max_norm_0_100 double,
+  pass_rate double,
+  updated_at timestamp,
+  PRIMARY KEY ((region, academic_year, system), institution_id, subject_id)
+);
+
+-- RF4: Reportes cross-system para comparación
+CREATE TABLE IF NOT EXISTS rf4_report_by_region_year (
+  region text,
+  academic_year int,
+  system text,
+  institution_id text,
+  subject_id text,
+  n_records int,
+  avg_norm_0_100 double,
+  min_norm_0_100 double,
+  max_norm_0_100 double,
+  pass_rate double,
+  updated_at timestamp,
+  PRIMARY KEY ((region, academic_year), system, institution_id, subject_id)
+) WITH CLUSTERING ORDER BY (system ASC, institution_id ASC, subject_id ASC);
+
+-- RF4: Promedios pre-calculados (tabla simplificada)
+CREATE TABLE IF NOT EXISTS promedio_por_region_anio (
   region text,
   anio int,
   codigo_sistema text,
@@ -54,8 +109,17 @@ CREATE TABLE IF NOT EXISTS edugrade_analitica.promedio_por_region_anio (
   PRIMARY KEY ((region, anio), codigo_sistema, id_materia, id_institucion)
 ) WITH CLUSTERING ORDER BY (codigo_sistema ASC, id_materia ASC, id_institucion ASC);
 
+-- ============================================================================
+-- 2) KEYSPACE: edugrade_auditoria (RF5 - Auditoría)
+-- ============================================================================
+
+CREATE KEYSPACE IF NOT EXISTS edugrade_auditoria
+WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
+USE edugrade_auditoria;
+
 -- RF5: Auditoría (append-only por entidad/mes)
-CREATE TABLE IF NOT EXISTS edugrade_auditoria.registro_auditoria_por_entidad_mes (
+CREATE TABLE IF NOT EXISTS registro_auditoria_por_entidad_mes (
   id_entidad text,
   aaaamm text,
   marca_tiempo timestamp,
@@ -69,7 +133,58 @@ CREATE TABLE IF NOT EXISTS edugrade_auditoria.registro_auditoria_por_entidad_mes
   PRIMARY KEY ((id_entidad, aaaamm), marca_tiempo)
 ) WITH CLUSTERING ORDER BY (marca_tiempo DESC);
 
+-- ============================================================================
 -- 3) VERIFICACIÓN (schema)
+-- ============================================================================
+
 DESCRIBE KEYSPACES;
-DESCRIBE TABLE edugrade_analitica.promedio_por_region_anio;
-DESCRIBE TABLE edugrade_auditoria.registro_auditoria_por_entidad_mes;
+-- Debería mostrar solo: edugrade_analitica y edugrade_auditoria
+
+USE edugrade_analitica;
+DESCRIBE TABLES;
+-- Debería mostrar 4 tablas:
+-- - rf4_fact_grades_by_region_year_system
+-- - rf4_report_by_region_year_system
+-- - rf4_report_by_region_year
+-- - promedio_por_region_anio
+
+DESCRIBE TABLE rf4_fact_grades_by_region_year_system;
+DESCRIBE TABLE rf4_report_by_region_year_system;
+DESCRIBE TABLE promedio_por_region_anio;
+
+USE edugrade_auditoria;
+DESCRIBE TABLES;
+-- Debería mostrar 1 tabla:
+-- - registro_auditoria_por_entidad_mes
+
+DESCRIBE TABLE registro_auditoria_por_entidad_mes;
+
+-- ============================================================================
+-- 4) CONSULTAS DE EJEMPLO
+-- ============================================================================
+
+-- Ver fact table de una región/año/sistema
+USE edugrade_analitica;
+SELECT * FROM rf4_fact_grades_by_region_year_system
+WHERE region = 'ZA-PTA' AND academic_year = 2023 AND system = 'UK';
+
+-- Ver reportes agregados
+SELECT * FROM rf4_report_by_region_year_system
+WHERE region = 'ZA-PTA' AND academic_year = 2023 AND system = 'UK';
+
+-- Comparar sistemas
+SELECT system, institution_id, avg_norm_0_100, pass_rate
+FROM rf4_report_by_region_year
+WHERE region = 'ZA-PTA' AND academic_year = 2023;
+
+-- Ver promedios simples
+SELECT * FROM promedio_por_region_anio
+WHERE region = 'ZA-PTA' AND anio = 2023;
+
+-- Ver auditoría
+USE edugrade_auditoria;
+SELECT marca_tiempo, accion, id_actor
+FROM registro_auditoria_por_entidad_mes
+WHERE id_entidad = 'NOTE#GR-2025-0001' AND aaaamm = '202602'
+ORDER BY marca_tiempo DESC;
+

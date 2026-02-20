@@ -48,12 +48,12 @@ Este documento explica cómo fluyen los datos a través de las 4 bases de datos 
 │        "valor_num_za7": 6.0  ← Conversión base    │
 │      },                                            │
 │      "conversiones": [],  ← Inicialmente vacío     │
-│      "inmutabilidad": {                            │
-│        "version": 1,                               │
-│        "hash": "abc123...",                        │
-│        "event_id": "evt_grd_000001"                │
-│      }                                             │
-│    }                                               │
+│      "inmutabilidad": {                            |
+│        "version": 1,                                │
+│        "hash": "abc123...",                         │
+│        "event_id": "evt_grd_000001"                 │
+│      }                                              │
+│    }                                                │
 └─────────────────────────────────────────────────────┘
 ```
 

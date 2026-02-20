@@ -172,4 +172,159 @@ router.get('/analitica/keys', async (req, res) => {
   }
 });
 
+/**
+ * RF4 - Consulta 3: Fact Table (Calificaciones individuales por región/año/sistema)
+ * GET /api/cassandra/analitica/facts?region=ZA-PTA&anio=2023&sistema=UK
+ */
+router.get('/analitica/facts', async (req, res) => {
+  try {
+    const { region, anio, sistema } = req.query;
+    
+    if (!region || !anio || !sistema) {
+      return res.status(400).json({ 
+        error: 'Parámetros requeridos: region, anio (academic_year), sistema (system code)' 
+      });
+    }
+
+    const query = `
+      SELECT * FROM edugrade_analitica.rf4_fact_grades_by_region_year_system
+      WHERE region = ? AND academic_year = ? AND system = ?
+    `;
+
+    const result = await client.execute(query, [region, parseInt(anio), sistema], { prepare: true });
+
+    const registros = result.rows.map(row => ({
+      region: row.region,
+      academic_year: row.academic_year,
+      system: row.system,
+      institution_id: row.institution_id,
+      subject_id: row.subject_id,
+      record_id: row.record_id,
+      student_id: row.student_id,
+      grade_raw: row.grade_raw,
+      grade_norm: parseFloat(row.grade_norm_0_100) || 0,
+      passed: row.passed,
+      event_ts: row.event_ts
+    }));
+
+    res.json({
+      filtros: { region, anio: parseInt(anio), sistema },
+      total_registros: registros.length,
+      registros
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * RF4 - Consulta 4: Reportes Agregados por Sistema
+ * GET /api/cassandra/analitica/reportes?region=ZA-PTA&anio=2023&sistema=UK
+ */
+router.get('/analitica/reportes', async (req, res) => {
+  try {
+    const { region, anio, sistema } = req.query;
+    
+    if (!region || !anio || !sistema) {
+      return res.status(400).json({ 
+        error: 'Parámetros requeridos: region, anio, sistema' 
+      });
+    }
+
+    const query = `
+      SELECT * FROM edugrade_analitica.rf4_report_by_region_year_system
+      WHERE region = ? AND academic_year = ? AND system = ?
+    `;
+
+    const result = await client.execute(query, [region, parseInt(anio), sistema], { prepare: true });
+
+    const reportes = result.rows.map(row => ({
+      region: row.region,
+      academic_year: row.academic_year,
+      system: row.system,
+      institution_id: row.institution_id,
+      subject_id: row.subject_id,
+      n_records: row.n_records,
+      avg_norm: parseFloat(row.avg_norm_0_100).toFixed(2),
+      min_norm: parseFloat(row.min_norm_0_100).toFixed(2),
+      max_norm: parseFloat(row.max_norm_0_100).toFixed(2),
+      pass_rate: parseFloat(row.pass_rate).toFixed(2),
+      updated_at: row.updated_at
+    }));
+
+    res.json({
+      filtros: { region, anio: parseInt(anio), sistema },
+      total_reportes: reportes.length,
+      reportes
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * RF4 - Consulta 5: Comparación Cross-System (todos los sistemas de una región/año)
+ * GET /api/cassandra/analitica/cross-system?region=ZA-PTA&anio=2023
+ */
+router.get('/analitica/cross-system', async (req, res) => {
+  try {
+    const { region, anio } = req.query;
+    
+    if (!region || !anio) {
+      return res.status(400).json({ 
+        error: 'Parámetros requeridos: region, anio' 
+      });
+    }
+
+    const query = `
+      SELECT * FROM edugrade_analitica.rf4_report_by_region_year
+      WHERE region = ? AND academic_year = ?
+    `;
+
+    const result = await client.execute(query, [region, parseInt(anio)], { prepare: true });
+
+    // Agrupar por sistema
+    const porSistema = {};
+    result.rows.forEach(row => {
+      const sistema = row.system;
+      if (!porSistema[sistema]) {
+        porSistema[sistema] = {
+          sistema,
+          total_registros: 0,
+          promedio_general: 0,
+          suma_notas: 0,
+          reportes: []
+        };
+      }
+      
+      porSistema[sistema].total_registros += row.n_records;
+      porSistema[sistema].suma_notas += row.avg_norm_0_100 * row.n_records;
+      porSistema[sistema].reportes.push({
+        institution_id: row.institution_id,
+        subject_id: row.subject_id,
+        n_records: row.n_records,
+        avg_norm: parseFloat(row.avg_norm_0_100).toFixed(2),
+        pass_rate: parseFloat(row.pass_rate).toFixed(2)
+      });
+    });
+
+    // Calcular promedios generales
+    Object.keys(porSistema).forEach(sistema => {
+      const datos = porSistema[sistema];
+      datos.promedio_general = datos.total_registros > 0 
+        ? (datos.suma_notas / datos.total_registros).toFixed(2)
+        : 0;
+      delete datos.suma_notas; // No necesitamos mostrar esto
+    });
+
+    res.json({
+      filtros: { region, anio: parseInt(anio) },
+      total_sistemas: Object.keys(porSistema).length,
+      por_sistema: porSistema
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
