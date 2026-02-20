@@ -1,0 +1,1203 @@
+{
+  "database": "edugrade",
+  "collections": {
+    "estudiantes": [
+      {
+        "student_id": "STU-0001",
+        "full_name": "Liam Nkosi",
+        "dob": "2007-05-14",
+        "nationality": "ZA",
+        "documento": {
+          "tipo": "passport",
+          "numero": "ZA87654321",
+          "pais_emision": "ZA"
+        },
+        "academic_history": {
+          "total_records": 1,
+          "institutions_attended": ["INS-001"],
+          "average_performance": "good",
+          "total_subjects": 1
+        },
+        "created_at": "2023-01-15T10:00:00Z",
+        "updated_at": "2025-03-10T14:22:00Z"
+      },
+      {
+        "student_id": "STU-0002",
+        "full_name": "Sofía Danko",
+        "dob": "2006-11-02",
+        "nationality": "AR",
+        "documento": {
+          "tipo": "DNI",
+          "numero": "44556677",
+          "pais_emision": "AR"
+        },
+        "academic_history": {
+          "total_records": 1,
+          "institutions_attended": ["INS-003"],
+          "average_performance": "excellent",
+          "total_subjects": 1
+        },
+        "created_at": "2023-03-01T09:00:00Z",
+        "updated_at": "2025-03-11T11:00:00Z"
+      },
+      {
+        "student_id": "STU-0003",
+        "full_name": "Noah van der Merwe",
+        "dob": "2006-08-19",
+        "nationality": "ZA",
+        "documento": {
+          "tipo": "passport",
+          "numero": "ZA11223344",
+          "pais_emision": "ZA"
+        },
+        "academic_history": {
+          "total_records": 1,
+          "institutions_attended": ["INS-002"],
+          "average_performance": "good",
+          "total_subjects": 1
+        },
+        "created_at": "2024-01-20T08:30:00Z",
+        "updated_at": "2025-03-12T10:15:00Z"
+      },
+      {
+        "student_id": "STU-0004",
+        "full_name": "Ava Smith",
+        "dob": "2006-07-19",
+        "nationality": "US",
+        "documento": {
+          "tipo": "passport",
+          "numero": "US998877665",
+          "pais_emision": "US"
+        },
+        "academic_history": {
+          "total_records": 1,
+          "institutions_attended": ["INS-005"],
+          "average_performance": "excellent",
+          "total_subjects": 1
+        },
+        "created_at": "2023-09-01T07:00:00Z",
+        "updated_at": "2025-03-13T09:30:00Z"
+      },
+      {
+        "student_id": "STU-0005",
+        "full_name": "Oliver Patel",
+        "dob": "2007-01-30",
+        "nationality": "UK",
+        "documento": {
+          "tipo": "passport",
+          "numero": "UK556677889",
+          "pais_emision": "UK"
+        },
+        "academic_history": {
+          "total_records": 1,
+          "institutions_attended": ["INS-007"],
+          "average_performance": "good",
+          "total_subjects": 1
+        },
+        "created_at": "2022-09-01T08:00:00Z",
+        "updated_at": "2025-03-14T12:00:00Z"
+      },
+      {
+        "student_id": "STU-0006",
+        "full_name": "Mia Johnson",
+        "dob": "2005-10-08",
+        "nationality": "US",
+        "documento": {
+          "tipo": "passport",
+          "numero": "US112233445",
+          "pais_emision": "US"
+        },
+        "academic_history": {
+          "total_records": 1,
+          "institutions_attended": ["INS-006"],
+          "average_performance": "satisfactory",
+          "total_subjects": 1
+        },
+        "created_at": "2023-09-01T07:00:00Z",
+        "updated_at": "2025-01-15T10:45:00Z"
+      },
+      {
+        "student_id": "STU-0007",
+        "full_name": "Emma Iuzzolino",
+        "dob": "2006-02-21",
+        "nationality": "AR",
+        "documento": {
+          "tipo": "DNI",
+          "numero": "43998877",
+          "pais_emision": "AR"
+        },
+        "academic_history": {
+          "total_records": 1,
+          "institutions_attended": ["INS-004"],
+          "average_performance": "needs_improvement",
+          "total_subjects": 1
+        },
+        "created_at": "2024-03-01T09:00:00Z",
+        "updated_at": "2024-12-20T14:00:00Z"
+      },
+      {
+        "student_id": "STU-0008",
+        "full_name": "Theo Samaan",
+        "dob": "2005-12-11",
+        "nationality": "ZA",
+        "documento": {
+          "tipo": "passport",
+          "numero": "ZA99887766",
+          "pais_emision": "ZA"
+        },
+        "academic_history": {
+          "total_records": 1,
+          "institutions_attended": ["INS-001"],
+          "average_performance": "excellent",
+          "total_subjects": 1
+        },
+        "created_at": "2023-01-15T10:00:00Z",
+        "updated_at": "2024-12-22T16:30:00Z"
+      },
+      {
+        "student_id": "STU-0009",
+        "full_name": "Charlotte Brown",
+        "dob": "2006-06-15",
+        "nationality": "UK",
+        "documento": {
+          "tipo": "passport",
+          "numero": "UK778899001",
+          "pais_emision": "UK"
+        },
+        "academic_history": {
+          "total_records": 1,
+          "institutions_attended": ["INS-007"],
+          "average_performance": "excellent",
+          "total_subjects": 1
+        },
+        "created_at": "2023-09-01T08:00:00Z",
+        "updated_at": "2024-12-25T11:20:00Z"
+      },
+      {
+        "student_id": "STU-0010",
+        "full_name": "Felix Müller",
+        "dob": "2007-03-22",
+        "nationality": "DE",
+        "documento": {
+          "tipo": "passport",
+          "numero": "DE334455667",
+          "pais_emision": "DE"
+        },
+        "academic_history": {
+          "total_records": 1,
+          "institutions_attended": ["INS-008"],
+          "average_performance": "good",
+          "total_subjects": 1
+        },
+        "created_at": "2023-08-15T09:00:00Z",
+        "updated_at": "2024-12-28T13:45:00Z"
+      }
+    ],
+    "instituciones": [
+      {
+        "institution_id": "INS-001",
+        "name": "Cape Town Central High",
+        "country": "ZA",
+        "region": "Western Cape",
+        "codigo_sistema": "ZA",
+        "metadata": {
+          "ciudad": "Cape Town",
+          "tipo": "public",
+          "nivel": "secondary",
+          "fundacion": 1995,
+          "website": "https://capetowncentral.edu.za"
+        },
+        "created_at": "2020-01-10T00:00:00Z",
+        "updated_at": "2025-01-05T00:00:00Z"
+      },
+      {
+        "institution_id": "INS-002",
+        "name": "Pretoria Academy",
+        "country": "ZA",
+        "region": "Gauteng",
+        "codigo_sistema": "ZA",
+        "metadata": {
+          "ciudad": "Pretoria",
+          "tipo": "private",
+          "nivel": "secondary",
+          "fundacion": 1988,
+          "website": "https://pretoriaacademy.co.za"
+        },
+        "created_at": "2019-06-15T00:00:00Z",
+        "updated_at": "2024-11-20T00:00:00Z"
+      },
+      {
+        "institution_id": "INS-003",
+        "name": "UADE Argentina",
+        "country": "AR",
+        "region": "CABA",
+        "codigo_sistema": "AR",
+        "metadata": {
+          "ciudad": "Buenos Aires",
+          "tipo": "private",
+          "nivel": "university",
+          "fundacion": 1957,
+          "website": "https://uade.edu.ar"
+        },
+        "created_at": "2018-03-01T00:00:00Z",
+        "updated_at": "2025-02-10T00:00:00Z"
+      },
+      {
+        "institution_id": "INS-004",
+        "name": "Buenos Aires High School",
+        "country": "AR",
+        "region": "Buenos Aires",
+        "codigo_sistema": "AR",
+        "metadata": {
+          "ciudad": "La Plata",
+          "tipo": "public",
+          "nivel": "secondary",
+          "fundacion": 1972,
+          "website": "https://bahighschool.edu.ar"
+        },
+        "created_at": "2019-09-10T00:00:00Z",
+        "updated_at": "2024-12-15T00:00:00Z"
+      },
+      {
+        "institution_id": "INS-005",
+        "name": "New York State HS",
+        "country": "US",
+        "region": "New York",
+        "codigo_sistema": "US",
+        "metadata": {
+          "ciudad": "Brooklyn",
+          "tipo": "public",
+          "nivel": "high_school",
+          "fundacion": 1965,
+          "website": "https://nystatehs.edu"
+        },
+        "created_at": "2017-08-20T00:00:00Z",
+        "updated_at": "2025-01-15T00:00:00Z"
+      },
+      {
+        "institution_id": "INS-006",
+        "name": "California Tech High",
+        "country": "US",
+        "region": "California",
+        "codigo_sistema": "US",
+        "metadata": {
+          "ciudad": "San Francisco",
+          "tipo": "public",
+          "nivel": "high_school",
+          "fundacion": 2005,
+          "website": "https://catechhigh.edu"
+        },
+        "created_at": "2018-07-01T00:00:00Z",
+        "updated_at": "2024-12-01T00:00:00Z"
+      },
+      {
+        "institution_id": "INS-007",
+        "name": "London Sixth Form College",
+        "country": "UK",
+        "region": "London",
+        "codigo_sistema": "UK",
+        "metadata": {
+          "ciudad": "London",
+          "tipo": "private",
+          "nivel": "sixth_form",
+          "fundacion": 1990,
+          "website": "https://londonsixth.ac.uk"
+        },
+        "created_at": "2016-09-01T00:00:00Z",
+        "updated_at": "2025-01-20T00:00:00Z"
+      },
+      {
+        "institution_id": "INS-008",
+        "name": "Berlin Gymnasium",
+        "country": "DE",
+        "region": "Berlin",
+        "codigo_sistema": "DE",
+        "metadata": {
+          "ciudad": "Berlin",
+          "tipo": "public",
+          "nivel": "gymnasium",
+          "fundacion": 1978,
+          "website": "https://berlin-gym.de"
+        },
+        "created_at": "2017-08-15T00:00:00Z",
+        "updated_at": "2024-11-30T00:00:00Z"
+      }
+    ],
+    "materias": [
+      {
+        "subject_id": "SUB-MATH-ZA",
+        "name": "Mathematics",
+        "system": "ZA",
+        "course_code": "MATH-101-ZA",
+        "id_institucion": "INS-001",
+        "creditos": 4,
+        "nivel": "Grade 11",
+        "created_at": "2020-01-15T00:00:00Z",
+        "updated_at": "2025-01-01T00:00:00Z"
+      },
+      {
+        "subject_id": "SUB-CS-AR",
+        "name": "Computer Science",
+        "system": "AR",
+        "course_code": "CS-201-AR",
+        "id_institucion": "INS-003",
+        "creditos": 6,
+        "nivel": "Primer Año",
+        "created_at": "2020-03-01T00:00:00Z",
+        "updated_at": "2025-02-15T00:00:00Z"
+      },
+      {
+        "subject_id": "SUB-ENG-ZA",
+        "name": "English",
+        "system": "ZA",
+        "course_code": "ENG-101-ZA",
+        "id_institucion": "INS-002",
+        "creditos": 4,
+        "nivel": "Grade 11",
+        "created_at": "2020-01-15T00:00:00Z",
+        "updated_at": "2024-12-01T00:00:00Z"
+      },
+      {
+        "subject_id": "SUB-BIO-US",
+        "name": "Biology",
+        "system": "US",
+        "course_code": "BIO-101-US",
+        "id_institucion": "INS-005",
+        "creditos": 4,
+        "nivel": "Grade 11",
+        "created_at": "2020-09-01T00:00:00Z",
+        "updated_at": "2025-01-10T00:00:00Z"
+      },
+      {
+        "subject_id": "SUB-PHY-UK",
+        "name": "Physics",
+        "system": "UK",
+        "course_code": "PHY-AS-UK",
+        "id_institucion": "INS-007",
+        "creditos": 4,
+        "nivel": "AS Level",
+        "created_at": "2020-09-01T00:00:00Z",
+        "updated_at": "2025-01-05T00:00:00Z"
+      },
+      {
+        "subject_id": "SUB-ECO-US",
+        "name": "Economics",
+        "system": "US",
+        "course_code": "ECO-201-US",
+        "id_institucion": "INS-006",
+        "creditos": 3,
+        "nivel": "Grade 12",
+        "created_at": "2020-09-01T00:00:00Z",
+        "updated_at": "2024-11-20T00:00:00Z"
+      },
+      {
+        "subject_id": "SUB-MATH-AR",
+        "name": "Matemática",
+        "system": "AR",
+        "course_code": "MAT-101-AR",
+        "id_institucion": "INS-004",
+        "creditos": 4,
+        "nivel": "5to Año",
+        "created_at": "2020-03-01T00:00:00Z",
+        "updated_at": "2024-12-10T00:00:00Z"
+      },
+      {
+        "subject_id": "SUB-CS-ZA",
+        "name": "Computer Science",
+        "system": "ZA",
+        "course_code": "CS-101-ZA",
+        "id_institucion": "INS-001",
+        "creditos": 4,
+        "nivel": "Grade 12",
+        "created_at": "2020-01-15T00:00:00Z",
+        "updated_at": "2024-12-20T00:00:00Z"
+      },
+      {
+        "subject_id": "SUB-HIST-UK",
+        "name": "History",
+        "system": "UK",
+        "course_code": "HIST-A2-UK",
+        "id_institucion": "INS-007",
+        "creditos": 4,
+        "nivel": "A2 Level",
+        "created_at": "2020-09-01T00:00:00Z",
+        "updated_at": "2024-12-18T00:00:00Z"
+      },
+      {
+        "subject_id": "SUB-CHEM-DE",
+        "name": "Chemie",
+        "system": "DE",
+        "course_code": "CHEM-11-DE",
+        "id_institucion": "INS-008",
+        "creditos": 4,
+        "nivel": "Klasse 11",
+        "created_at": "2020-08-15T00:00:00Z",
+        "updated_at": "2024-12-15T00:00:00Z"
+      }
+    ],
+    "trayectorias": [
+      {
+        "trayectoria_id": "TRAY-001",
+        "id_estudiante": "STU-0001",
+        "id_institucion": "INS-001",
+        "fecha_inicio": "2023-01-15",
+        "fecha_fin": null,
+        "estado": "activo",
+        "nivel_actual": "Grade 11",
+        "rendimiento_promedio": 75.0,
+        "materias_cursadas": 1,
+        "created_at": "2023-01-15T10:00:00Z",
+        "updated_at": "2025-03-10T14:22:00Z"
+      },
+      {
+        "trayectoria_id": "TRAY-002",
+        "id_estudiante": "STU-0002",
+        "id_institucion": "INS-003",
+        "fecha_inicio": "2023-03-01",
+        "fecha_fin": null,
+        "estado": "activo",
+        "nivel_actual": "Primer Año",
+        "rendimiento_promedio": 8.0,
+        "materias_cursadas": 1,
+        "created_at": "2023-03-01T09:00:00Z",
+        "updated_at": "2025-03-11T11:00:00Z"
+      },
+      {
+        "trayectoria_id": "TRAY-003",
+        "id_estudiante": "STU-0003",
+        "id_institucion": "INS-002",
+        "fecha_inicio": "2024-01-20",
+        "fecha_fin": null,
+        "estado": "activo",
+        "nivel_actual": "Grade 11",
+        "rendimiento_promedio": 68.0,
+        "materias_cursadas": 1,
+        "created_at": "2024-01-20T08:30:00Z",
+        "updated_at": "2025-03-12T10:15:00Z"
+      },
+      {
+        "trayectoria_id": "TRAY-004",
+        "id_estudiante": "STU-0004",
+        "id_institucion": "INS-005",
+        "fecha_inicio": "2023-09-01",
+        "fecha_fin": null,
+        "estado": "activo",
+        "nivel_actual": "Grade 11",
+        "rendimiento_promedio": 4.0,
+        "materias_cursadas": 1,
+        "created_at": "2023-09-01T07:00:00Z",
+        "updated_at": "2025-03-13T09:30:00Z"
+      },
+      {
+        "trayectoria_id": "TRAY-005",
+        "id_estudiante": "STU-0005",
+        "id_institucion": "INS-007",
+        "fecha_inicio": "2022-09-01",
+        "fecha_fin": null,
+        "estado": "activo",
+        "nivel_actual": "AS Level",
+        "rendimiento_promedio": 3.3,
+        "materias_cursadas": 1,
+        "created_at": "2022-09-01T08:00:00Z",
+        "updated_at": "2025-03-14T12:00:00Z"
+      },
+      {
+        "trayectoria_id": "TRAY-006",
+        "id_estudiante": "STU-0006",
+        "id_institucion": "INS-006",
+        "fecha_inicio": "2023-09-01",
+        "fecha_fin": null,
+        "estado": "activo",
+        "nivel_actual": "Grade 12",
+        "rendimiento_promedio": 2.3,
+        "materias_cursadas": 1,
+        "created_at": "2023-09-01T07:00:00Z",
+        "updated_at": "2025-01-15T10:45:00Z"
+      },
+      {
+        "trayectoria_id": "TRAY-007",
+        "id_estudiante": "STU-0007",
+        "id_institucion": "INS-004",
+        "fecha_inicio": "2024-03-01",
+        "fecha_fin": null,
+        "estado": "activo",
+        "nivel_actual": "5to Año",
+        "rendimiento_promedio": 4.0,
+        "materias_cursadas": 1,
+        "created_at": "2024-03-01T09:00:00Z",
+        "updated_at": "2024-12-20T14:00:00Z"
+      },
+      {
+        "trayectoria_id": "TRAY-008",
+        "id_estudiante": "STU-0008",
+        "id_institucion": "INS-001",
+        "fecha_inicio": "2023-01-15",
+        "fecha_fin": null,
+        "estado": "activo",
+        "nivel_actual": "Grade 12",
+        "rendimiento_promedio": 82.0,
+        "materias_cursadas": 1,
+        "created_at": "2023-01-15T10:00:00Z",
+        "updated_at": "2024-12-22T16:30:00Z"
+      },
+      {
+        "trayectoria_id": "TRAY-009",
+        "id_estudiante": "STU-0009",
+        "id_institucion": "INS-007",
+        "fecha_inicio": "2023-09-01",
+        "fecha_fin": null,
+        "estado": "activo",
+        "nivel_actual": "A2 Level",
+        "rendimiento_promedio": 4.0,
+        "materias_cursadas": 1,
+        "created_at": "2023-09-01T08:00:00Z",
+        "updated_at": "2024-12-25T11:20:00Z"
+      },
+      {
+        "trayectoria_id": "TRAY-010",
+        "id_estudiante": "STU-0010",
+        "id_institucion": "INS-008",
+        "fecha_inicio": "2023-08-15",
+        "fecha_fin": null,
+        "estado": "activo",
+        "nivel_actual": "Klasse 11",
+        "rendimiento_promedio": 2.3,
+        "materias_cursadas": 1,
+        "created_at": "2023-08-15T09:00:00Z",
+        "updated_at": "2024-12-28T13:45:00Z"
+      }
+    ],
+    "calificaciones": [
+      {
+        "record_id": "GR-2025-0001",
+        "student_id": "STU-0001",
+        "zone": "AFRICA",
+        "student_snapshot": {
+          "full_name": "Liam Nkosi",
+          "dob": "2007-05-14",
+          "nationality": "ZA",
+          "documento": "ZA87654321"
+        },
+        "institution_snapshot": {
+          "institution_id": "INS-001",
+          "name": "Cape Town Central High",
+          "country": "ZA",
+          "region": "Western Cape",
+          "system": "ZA"
+        },
+        "academic_context": {
+          "academic_year": 2025,
+          "term": "T1",
+          "level": "Grade 11",
+          "subject_id": "SUB-MATH-ZA",
+          "subject_name": "Mathematics",
+          "course_code": "MATH-101-ZA",
+          "credits": 4
+        },
+        "subject_snapshot": {
+          "subject_id": "SUB-MATH-ZA",
+          "name": "Mathematics",
+          "system": "ZA",
+          "course_code": "MATH-101-ZA"
+        },
+        "evaluation": {
+          "scale_type": "percentage",
+          "grade_value": "75%",
+          "numeric_value": 75.0,
+          "passed": true,
+          "passing_threshold": 50.0,
+          "evaluation_date": "2025-03-10",
+          "evaluator": "Prof. Smith"
+        },
+        "original_grade": {
+          "system": "ZA",
+          "value": "75%",
+          "scale": "percentage_za",
+          "range": "0-100"
+        },
+        "evidence": [
+          {
+            "type": "pdf",
+            "url": "https://storage.edugrade.com/GR-2025-0001.pdf",
+            "hash": "sha256:abc123...def456"
+          }
+        ],
+        "immutability": {
+          "locked": true,
+          "locked_at": "2025-03-10T14:22:00Z",
+          "locked_by": "system"
+        },
+        "history": [],
+        "created_at": "2025-03-10T14:22:00Z",
+        "updated_at": "2025-03-10T14:22:00Z"
+      },
+      {
+        "record_id": "GR-2025-0002",
+        "student_id": "STU-0002",
+        "zone": "SOUTH_AMERICA",
+        "student_snapshot": {
+          "full_name": "Sofía Danko",
+          "dob": "2006-11-02",
+          "nationality": "AR",
+          "documento": "44556677"
+        },
+        "institution_snapshot": {
+          "institution_id": "INS-003",
+          "name": "UADE Argentina",
+          "country": "AR",
+          "region": "CABA",
+          "system": "AR"
+        },
+        "academic_context": {
+          "academic_year": 2025,
+          "term": "T1",
+          "level": "Primer Año",
+          "subject_id": "SUB-CS-AR",
+          "subject_name": "Computer Science",
+          "course_code": "CS-201-AR",
+          "credits": 6
+        },
+        "subject_snapshot": {
+          "subject_id": "SUB-CS-AR",
+          "name": "Computer Science",
+          "system": "AR",
+          "course_code": "CS-201-AR"
+        },
+        "evaluation": {
+          "scale_type": "numeric_scale",
+          "grade_value": "8",
+          "numeric_value": 8.0,
+          "passed": true,
+          "passing_threshold": 4.0,
+          "evaluation_date": "2025-03-11",
+          "evaluator": "Prof. García"
+        },
+        "original_grade": {
+          "system": "AR",
+          "value": "8",
+          "scale": "1-10",
+          "range": "1-10"
+        },
+        "evidence": [
+          {
+            "type": "pdf",
+            "url": "https://storage.edugrade.com/GR-2025-0002.pdf",
+            "hash": "sha256:ghi789...jkl012"
+          }
+        ],
+        "immutability": {
+          "locked": true,
+          "locked_at": "2025-03-11T11:00:00Z",
+          "locked_by": "system"
+        },
+        "history": [],
+        "created_at": "2025-03-11T11:00:00Z",
+        "updated_at": "2025-03-11T11:00:00Z"
+      },
+      {
+        "record_id": "GR-2025-0003",
+        "student_id": "STU-0003",
+        "zone": "AFRICA",
+        "student_snapshot": {
+          "full_name": "Noah van der Merwe",
+          "dob": "2006-08-19",
+          "nationality": "ZA",
+          "documento": "ZA11223344"
+        },
+        "institution_snapshot": {
+          "institution_id": "INS-002",
+          "name": "Pretoria Academy",
+          "country": "ZA",
+          "region": "Gauteng",
+          "system": "ZA"
+        },
+        "academic_context": {
+          "academic_year": 2025,
+          "term": "T1",
+          "level": "Grade 11",
+          "subject_id": "SUB-ENG-ZA",
+          "subject_name": "English",
+          "course_code": "ENG-101-ZA",
+          "credits": 4
+        },
+        "subject_snapshot": {
+          "subject_id": "SUB-ENG-ZA",
+          "name": "English",
+          "system": "ZA",
+          "course_code": "ENG-101-ZA"
+        },
+        "evaluation": {
+          "scale_type": "percentage",
+          "grade_value": "68%",
+          "numeric_value": 68.0,
+          "passed": true,
+          "passing_threshold": 50.0,
+          "evaluation_date": "2025-03-12",
+          "evaluator": "Prof. Johnson"
+        },
+        "original_grade": {
+          "system": "ZA",
+          "value": "68%",
+          "scale": "percentage_za",
+          "range": "0-100"
+        },
+        "evidence": [
+          {
+            "type": "pdf",
+            "url": "https://storage.edugrade.com/GR-2025-0003.pdf",
+            "hash": "sha256:mno345...pqr678"
+          }
+        ],
+        "immutability": {
+          "locked": true,
+          "locked_at": "2025-03-12T10:15:00Z",
+          "locked_by": "system"
+        },
+        "history": [],
+        "created_at": "2025-03-12T10:15:00Z",
+        "updated_at": "2025-03-12T10:15:00Z"
+      },
+      {
+        "record_id": "GR-2025-0004",
+        "student_id": "STU-0004",
+        "zone": "NORTH_AMERICA",
+        "student_snapshot": {
+          "full_name": "Ava Smith",
+          "dob": "2006-07-19",
+          "nationality": "US",
+          "documento": "US998877665"
+        },
+        "institution_snapshot": {
+          "institution_id": "INS-005",
+          "name": "New York State HS",
+          "country": "US",
+          "region": "New York",
+          "system": "US"
+        },
+        "academic_context": {
+          "academic_year": 2025,
+          "term": "T1",
+          "level": "Grade 11",
+          "subject_id": "SUB-BIO-US",
+          "subject_name": "Biology",
+          "course_code": "BIO-101-US",
+          "credits": 4
+        },
+        "subject_snapshot": {
+          "subject_id": "SUB-BIO-US",
+          "name": "Biology",
+          "system": "US",
+          "course_code": "BIO-101-US"
+        },
+        "evaluation": {
+          "scale_type": "letter_grade",
+          "grade_value": "A",
+          "numeric_value": 4.0,
+          "passed": true,
+          "passing_threshold": 1.0,
+          "evaluation_date": "2025-03-13",
+          "evaluator": "Prof. Williams"
+        },
+        "original_grade": {
+          "system": "US",
+          "value": "A",
+          "scale": "gpa",
+          "range": "0.0-4.0"
+        },
+        "evidence": [
+          {
+            "type": "pdf",
+            "url": "https://storage.edugrade.com/GR-2025-0004.pdf",
+            "hash": "sha256:stu901...vwx234"
+          }
+        ],
+        "immutability": {
+          "locked": true,
+          "locked_at": "2025-03-13T09:30:00Z",
+          "locked_by": "system"
+        },
+        "history": [],
+        "created_at": "2025-03-13T09:30:00Z",
+        "updated_at": "2025-03-13T09:30:00Z"
+      },
+      {
+        "record_id": "GR-2025-0005",
+        "student_id": "STU-0005",
+        "zone": "EUROPE",
+        "student_snapshot": {
+          "full_name": "Oliver Patel",
+          "dob": "2007-01-30",
+          "nationality": "UK",
+          "documento": "UK556677889"
+        },
+        "institution_snapshot": {
+          "institution_id": "INS-007",
+          "name": "London Sixth Form College",
+          "country": "UK",
+          "region": "London",
+          "system": "UK"
+        },
+        "academic_context": {
+          "academic_year": 2025,
+          "term": "T1",
+          "level": "AS Level",
+          "subject_id": "SUB-PHY-UK",
+          "subject_name": "Physics",
+          "course_code": "PHY-AS-UK",
+          "credits": 4
+        },
+        "subject_snapshot": {
+          "subject_id": "SUB-PHY-UK",
+          "name": "Physics",
+          "system": "UK",
+          "course_code": "PHY-AS-UK"
+        },
+        "evaluation": {
+          "scale_type": "letter_grade",
+          "grade_value": "B",
+          "numeric_value": 3.3,
+          "passed": true,
+          "passing_threshold": 1.0,
+          "evaluation_date": "2025-03-14",
+          "evaluator": "Prof. Davies"
+        },
+        "original_grade": {
+          "system": "UK",
+          "value": "B",
+          "scale": "uk_grades",
+          "range": "A*-E"
+        },
+        "evidence": [
+          {
+            "type": "pdf",
+            "url": "https://storage.edugrade.com/GR-2025-0005.pdf",
+            "hash": "sha256:yz456...abc789"
+          }
+        ],
+        "immutability": {
+          "locked": true,
+          "locked_at": "2025-03-14T12:00:00Z",
+          "locked_by": "system"
+        },
+        "history": [],
+        "created_at": "2025-03-14T12:00:00Z",
+        "updated_at": "2025-03-14T12:00:00Z"
+      },
+      {
+        "record_id": "GR-2024-0006",
+        "student_id": "STU-0006",
+        "zone": "NORTH_AMERICA",
+        "student_snapshot": {
+          "full_name": "Mia Johnson",
+          "dob": "2005-10-08",
+          "nationality": "US",
+          "documento": "US112233445"
+        },
+        "institution_snapshot": {
+          "institution_id": "INS-006",
+          "name": "California Tech High",
+          "country": "US",
+          "region": "California",
+          "system": "US"
+        },
+        "academic_context": {
+          "academic_year": 2024,
+          "term": "T4",
+          "level": "Grade 12",
+          "subject_id": "SUB-ECO-US",
+          "subject_name": "Economics",
+          "course_code": "ECO-201-US",
+          "credits": 3
+        },
+        "subject_snapshot": {
+          "subject_id": "SUB-ECO-US",
+          "name": "Economics",
+          "system": "US",
+          "course_code": "ECO-201-US"
+        },
+        "evaluation": {
+          "scale_type": "letter_grade",
+          "grade_value": "C+",
+          "numeric_value": 2.3,
+          "passed": true,
+          "passing_threshold": 1.0,
+          "evaluation_date": "2024-12-15",
+          "evaluator": "Prof. Martinez"
+        },
+        "original_grade": {
+          "system": "US",
+          "value": "C+",
+          "scale": "gpa",
+          "range": "0.0-4.0"
+        },
+        "evidence": [
+          {
+            "type": "pdf",
+            "url": "https://storage.edugrade.com/GR-2024-0006.pdf",
+            "hash": "sha256:def012...ghi345"
+          }
+        ],
+        "immutability": {
+          "locked": true,
+          "locked_at": "2024-12-15T10:45:00Z",
+          "locked_by": "system"
+        },
+        "history": [],
+        "created_at": "2024-12-15T10:45:00Z",
+        "updated_at": "2024-12-15T10:45:00Z"
+      },
+      {
+        "record_id": "GR-2024-0007",
+        "student_id": "STU-0007",
+        "zone": "SOUTH_AMERICA",
+        "student_snapshot": {
+          "full_name": "Emma Iuzzolino",
+          "dob": "2006-02-21",
+          "nationality": "AR",
+          "documento": "43998877"
+        },
+        "institution_snapshot": {
+          "institution_id": "INS-004",
+          "name": "Buenos Aires High School",
+          "country": "AR",
+          "region": "Buenos Aires",
+          "system": "AR"
+        },
+        "academic_context": {
+          "academic_year": 2024,
+          "term": "T4",
+          "level": "5to Año",
+          "subject_id": "SUB-MATH-AR",
+          "subject_name": "Matemática",
+          "course_code": "MAT-101-AR",
+          "credits": 4
+        },
+        "subject_snapshot": {
+          "subject_id": "SUB-MATH-AR",
+          "name": "Matemática",
+          "system": "AR",
+          "course_code": "MAT-101-AR"
+        },
+        "evaluation": {
+          "scale_type": "numeric_scale",
+          "grade_value": "4",
+          "numeric_value": 4.0,
+          "passed": false,
+          "passing_threshold": 6.0,
+          "evaluation_date": "2024-12-20",
+          "evaluator": "Prof. López"
+        },
+        "original_grade": {
+          "system": "AR",
+          "value": "4",
+          "scale": "1-10",
+          "range": "1-10"
+        },
+        "evidence": [
+          {
+            "type": "pdf",
+            "url": "https://storage.edugrade.com/GR-2024-0007.pdf",
+            "hash": "sha256:jkl678...mno901"
+          }
+        ],
+        "immutability": {
+          "locked": true,
+          "locked_at": "2024-12-20T14:00:00Z",
+          "locked_by": "system"
+        },
+        "history": [],
+        "created_at": "2024-12-20T14:00:00Z",
+        "updated_at": "2024-12-20T14:00:00Z"
+      },
+      {
+        "record_id": "GR-2024-0008",
+        "student_id": "STU-0008",
+        "zone": "AFRICA",
+        "student_snapshot": {
+          "full_name": "Theo Samaan",
+          "dob": "2005-12-11",
+          "nationality": "ZA",
+          "documento": "ZA99887766"
+        },
+        "institution_snapshot": {
+          "institution_id": "INS-001",
+          "name": "Cape Town Central High",
+          "country": "ZA",
+          "region": "Western Cape",
+          "system": "ZA"
+        },
+        "academic_context": {
+          "academic_year": 2024,
+          "term": "T4",
+          "level": "Grade 12",
+          "subject_id": "SUB-CS-ZA",
+          "subject_name": "Computer Science",
+          "course_code": "CS-101-ZA",
+          "credits": 4
+        },
+        "subject_snapshot": {
+          "subject_id": "SUB-CS-ZA",
+          "name": "Computer Science",
+          "system": "ZA",
+          "course_code": "CS-101-ZA"
+        },
+        "evaluation": {
+          "scale_type": "percentage",
+          "grade_value": "82%",
+          "numeric_value": 82.0,
+          "passed": true,
+          "passing_threshold": 50.0,
+          "evaluation_date": "2024-12-22",
+          "evaluator": "Prof. Naidoo"
+        },
+        "original_grade": {
+          "system": "ZA",
+          "value": "82%",
+          "scale": "percentage_za",
+          "range": "0-100"
+        },
+        "evidence": [
+          {
+            "type": "pdf",
+            "url": "https://storage.edugrade.com/GR-2024-0008.pdf",
+            "hash": "sha256:pqr234...stu567"
+          }
+        ],
+        "immutability": {
+          "locked": true,
+          "locked_at": "2024-12-22T16:30:00Z",
+          "locked_by": "system"
+        },
+        "history": [],
+        "created_at": "2024-12-22T16:30:00Z",
+        "updated_at": "2024-12-22T16:30:00Z"
+      },
+      {
+        "record_id": "GR-2024-0009",
+        "student_id": "STU-0009",
+        "zone": "EUROPE",
+        "student_snapshot": {
+          "full_name": "Charlotte Brown",
+          "dob": "2006-06-15",
+          "nationality": "UK",
+          "documento": "UK778899001"
+        },
+        "institution_snapshot": {
+          "institution_id": "INS-007",
+          "name": "London Sixth Form College",
+          "country": "UK",
+          "region": "London",
+          "system": "UK"
+        },
+        "academic_context": {
+          "academic_year": 2024,
+          "term": "T4",
+          "level": "A2 Level",
+          "subject_id": "SUB-HIST-UK",
+          "subject_name": "History",
+          "course_code": "HIST-A2-UK",
+          "credits": 4
+        },
+        "subject_snapshot": {
+          "subject_id": "SUB-HIST-UK",
+          "name": "History",
+          "system": "UK",
+          "course_code": "HIST-A2-UK"
+        },
+        "evaluation": {
+          "scale_type": "letter_grade",
+          "grade_value": "A*",
+          "numeric_value": 4.0,
+          "passed": true,
+          "passing_threshold": 1.0,
+          "evaluation_date": "2024-12-25",
+          "evaluator": "Prof. Thompson"
+        },
+        "original_grade": {
+          "system": "UK",
+          "value": "A*",
+          "scale": "uk_grades",
+          "range": "A*-E"
+        },
+        "evidence": [
+          {
+            "type": "pdf",
+            "url": "https://storage.edugrade.com/GR-2024-0009.pdf",
+            "hash": "sha256:vwx890...yz123"
+          }
+        ],
+        "immutability": {
+          "locked": true,
+          "locked_at": "2024-12-25T11:20:00Z",
+          "locked_by": "system"
+        },
+        "history": [],
+        "created_at": "2024-12-25T11:20:00Z",
+        "updated_at": "2024-12-25T11:20:00Z"
+      },
+      {
+        "record_id": "GR-2024-0010",
+        "student_id": "STU-0010",
+        "zone": "EUROPE",
+        "student_snapshot": {
+          "full_name": "Felix Müller",
+          "dob": "2007-03-22",
+          "nationality": "DE",
+          "documento": "DE334455667"
+        },
+        "institution_snapshot": {
+          "institution_id": "INS-008",
+          "name": "Berlin Gymnasium",
+          "country": "DE",
+          "region": "Berlin",
+          "system": "DE"
+        },
+        "academic_context": {
+          "academic_year": 2024,
+          "term": "T4",
+          "level": "Klasse 11",
+          "subject_id": "SUB-CHEM-DE",
+          "subject_name": "Chemie",
+          "course_code": "CHEM-11-DE",
+          "credits": 4
+        },
+        "subject_snapshot": {
+          "subject_id": "SUB-CHEM-DE",
+          "name": "Chemie",
+          "system": "DE",
+          "course_code": "CHEM-11-DE"
+        },
+        "evaluation": {
+          "scale_type": "numeric_inverted",
+          "grade_value": "2.3",
+          "numeric_value": 2.3,
+          "passed": true,
+          "passing_threshold": 4.0,
+          "evaluation_date": "2024-12-28",
+          "evaluator": "Prof. Schmidt"
+        },
+        "original_grade": {
+          "system": "DE",
+          "value": "2.3",
+          "scale": "german",
+          "range": "1.0-6.0"
+        },
+        "evidence": [
+          {
+            "type": "pdf",
+            "url": "https://storage.edugrade.com/GR-2024-0010.pdf",
+            "hash": "sha256:abc456...def789"
+          }
+        ],
+        "immutability": {
+          "locked": true,
+          "locked_at": "2024-12-28T13:45:00Z",
+          "locked_by": "system"
+        },
+        "history": [],
+        "created_at": "2024-12-28T13:45:00Z",
+        "updated_at": "2024-12-28T13:45:00Z"
+      }
+    ]
+  }
+}
