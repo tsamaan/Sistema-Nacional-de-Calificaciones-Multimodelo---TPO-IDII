@@ -139,11 +139,11 @@
         "student_id": "STU-0008",
         "full_name": "Theo Samaan",
         "dob": "2005-12-11",
-        "nationality": "ZA",
+        "nationality": "DE",
         "documento": {
           "tipo": "passport",
-          "numero": "ZA99887766",
-          "pais_emision": "ZA"
+          "numero": "DE99887766",
+          "pais_emision": "DE"
         },
         "academic_history": {
           "total_records": 1,
@@ -199,7 +199,7 @@
         "name": "Cape Town Central High",
         "country": "ZA",
         "region": "Western Cape",
-        "codigo_sistema": "ZA",
+        "codigo_sistema": "ZA7",
         "metadata": {
           "ciudad": "Cape Town",
           "tipo": "public",
@@ -215,7 +215,7 @@
         "name": "Pretoria Academy",
         "country": "ZA",
         "region": "Gauteng",
-        "codigo_sistema": "ZA",
+        "codigo_sistema": "ZA7",
         "metadata": {
           "ciudad": "Pretoria",
           "tipo": "private",
@@ -327,7 +327,7 @@
       {
         "subject_id": "SUB-MATH-ZA",
         "name": "Mathematics",
-        "system": "ZA",
+        "system": "ZA7",
         "course_code": "MATH-101-ZA",
         "id_institucion": "INS-001",
         "creditos": 4,
@@ -349,7 +349,7 @@
       {
         "subject_id": "SUB-ENG-ZA",
         "name": "English",
-        "system": "ZA",
+        "system": "ZA7",
         "course_code": "ENG-101-ZA",
         "id_institucion": "INS-002",
         "creditos": 4,
@@ -404,7 +404,7 @@
       {
         "subject_id": "SUB-CS-ZA",
         "name": "Computer Science",
-        "system": "ZA",
+        "system": "ZA7",
         "course_code": "CS-101-ZA",
         "id_institucion": "INS-001",
         "creditos": 4,
@@ -597,7 +597,7 @@
         "subject_snapshot": {
           "subject_id": "SUB-MATH-ZA",
           "name": "Mathematics",
-          "system": "ZA",
+          "system": "ZA7",
           "course_code": "MATH-101-ZA"
         },
         "evaluation": {
@@ -610,7 +610,7 @@
           "evaluator": "Prof. Smith"
         },
         "original_grade": {
-          "system": "ZA",
+          "system": "ZA7",
           "value": "75%",
           "scale": "percentage_za",
           "range": "0-100"
@@ -709,7 +709,7 @@
           "name": "Pretoria Academy",
           "country": "ZA",
           "region": "Gauteng",
-          "system": "ZA"
+          "system": "ZA7"
         },
         "academic_context": {
           "academic_year": 2025,
@@ -723,7 +723,7 @@
         "subject_snapshot": {
           "subject_id": "SUB-ENG-ZA",
           "name": "English",
-          "system": "ZA",
+          "system": "ZA7",
           "course_code": "ENG-101-ZA"
         },
         "evaluation": {
@@ -736,7 +736,7 @@
           "evaluator": "Prof. Johnson"
         },
         "original_grade": {
-          "system": "ZA",
+          "system": "ZA7",
           "value": "68%",
           "scale": "percentage_za",
           "range": "0-100"
@@ -1012,19 +1012,19 @@
       {
         "record_id": "GR-2024-0008",
         "student_id": "STU-0008",
-        "zone": "AFRICA",
+        "zone": "EUROPE",
         "student_snapshot": {
           "full_name": "Theo Samaan",
           "dob": "2005-12-11",
-          "nationality": "ZA",
-          "documento": "ZA99887766"
+          "nationality": "DE",
+          "documento": "DE99887766"
         },
         "institution_snapshot": {
           "institution_id": "INS-001",
           "name": "Cape Town Central High",
           "country": "ZA",
           "region": "Western Cape",
-          "system": "ZA"
+          "system": "ZA7"
         },
         "academic_context": {
           "academic_year": 2024,
@@ -1038,7 +1038,7 @@
         "subject_snapshot": {
           "subject_id": "SUB-CS-ZA",
           "name": "Computer Science",
-          "system": "ZA",
+          "system": "ZA7",
           "course_code": "CS-101-ZA"
         },
         "evaluation": {
@@ -1051,7 +1051,7 @@
           "evaluator": "Prof. Naidoo"
         },
         "original_grade": {
-          "system": "ZA",
+          "system": "ZA7",
           "value": "82%",
           "scale": "percentage_za",
           "range": "0-100"

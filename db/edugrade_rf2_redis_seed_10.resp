@@ -1,185 +1,81 @@
 # =========================================
 # SEED REDIS - EDUGRADE MULTIMODELO
 # Reglas de conversión + Cache (10 registros)
-# Formato: RESP Protocol
+# Formato: Compatible con API Redis
 # =========================================
 
-# 1. REGLAS DE CONVERSIÓN (sistema origen → US)
+# 1. REGLAS DE CONVERSIÓN (sistema origen → ZA7)
+# Formato: regla:FROM#ZA7:MINISTERIO:SECUNDARIO:2025:VERSION
 # =========================================
 
-# 1.1 Regla ZA → US (Porcentaje sudafricano a GPA estadounidense)
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "0" "0.0"
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "30" "0.0"
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "40" "1.0"
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "50" "1.5"
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "60" "2.0"
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "70" "3.0"
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "75" "3.3"
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "80" "3.7"
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "85" "4.0"
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "90" "4.0"
-HSET RULE#ZA#US#MINEDU_ZA#v2025-01 "100" "4.0"
+# 1.1 Regla AR → ZA7 (Escala 1-10 argentina a escala 1-7 sudafricana)
+HSET regla:AR#ZA7:MINISTERIO:SECUNDARIO:2025:1 from "AR" to "ZA7" version "1" organismo "MINISTERIO" nivel "SECUNDARIO" anio "2025" metodo "tabla" vigencia_desde "2025-01-01" vigencia_hasta "2025-12-31" mapping "{\"1\":\"1\",\"2\":\"1\",\"3\":\"2\",\"4\":\"3\",\"5\":\"4\",\"6\":\"4\",\"7\":\"5\",\"8\":\"6\",\"9\":\"6\",\"10\":\"7\"}"
 
-# 1.2 Regla AR → US (Escala 1-10 argentina a GPA estadounidense)
-HSET RULE#AR#US#MINEDU_ZA#v2025-01 "1" "0.0"
-HSET RULE#AR#US#MINEDU_ZA#v2025-01 "2" "0.0"
-HSET RULE#AR#US#MINEDU_ZA#v2025-01 "3" "0.0"
-HSET RULE#AR#US#MINEDU_ZA#v2025-01 "4" "0.0"
-HSET RULE#AR#US#MINEDU_ZA#v2025-01 "5" "1.0"
-HSET RULE#AR#US#MINEDU_ZA#v2025-01 "6" "2.0"
-HSET RULE#AR#US#MINEDU_ZA#v2025-01 "7" "3.0"
-HSET RULE#AR#US#MINEDU_ZA#v2025-01 "8" "3.7"
-HSET RULE#AR#US#MINEDU_ZA#v2025-01 "9" "3.9"
-HSET RULE#AR#US#MINEDU_ZA#v2025-01 "10" "4.0"
+# 1.2 Regla UK → ZA7 (Letras UK a escala 1-7 sudafricana)
+HSET regla:UK#ZA7:MINISTERIO:SECUNDARIO:2025:1 from "UK" to "ZA7" version "1" organismo "MINISTERIO" nivel "SECUNDARIO" anio "2025" metodo "tabla" vigencia_desde "2025-01-01" vigencia_hasta "2025-12-31" mapping "{\"E\":\"2\",\"D\":\"3\",\"C\":\"4\",\"B\":\"5\",\"A\":\"6\",\"A*\":\"7\"}"
 
-# 1.3 Regla UK → US (Letras UK a GPA estadounidense)
-HSET RULE#UK#US#MINEDU_ZA#v2026-01 "E" "1.0"
-HSET RULE#UK#US#MINEDU_ZA#v2026-01 "D" "1.7"
-HSET RULE#UK#US#MINEDU_ZA#v2026-01 "C" "2.3"
-HSET RULE#UK#US#MINEDU_ZA#v2026-01 "B" "3.3"
-HSET RULE#UK#US#MINEDU_ZA#v2026-01 "A" "4.0"
-HSET RULE#UK#US#MINEDU_ZA#v2026-01 "A*" "4.0"
+# 1.3 Regla DE → ZA7 (Sistema alemán invertido a escala 1-7 sudafricana)
+HSET regla:DE#ZA7:MINISTERIO:SECUNDARIO:2025:1 from "DE" to "ZA7" version "1" organismo "MINISTERIO" nivel "SECUNDARIO" anio "2025" metodo "tabla" vigencia_desde "2025-01-01" vigencia_hasta "2025-12-31" mapping "{\"1.0\":\"7\",\"1.3\":\"7\",\"1.7\":\"6\",\"2.0\":\"6\",\"2.3\":\"5\",\"2.7\":\"5\",\"3.0\":\"4\",\"3.3\":\"4\",\"3.7\":\"3\",\"4.0\":\"3\",\"5.0\":\"2\",\"6.0\":\"1\"}"
 
-# 1.4 Regla DE → US (Sistema alemán invertido a GPA estadounidense)
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "1.0" "4.0"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "1.3" "4.0"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "1.7" "3.7"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "2.0" "3.3"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "2.3" "3.0"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "2.7" "2.7"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "3.0" "2.3"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "3.3" "2.0"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "3.7" "1.3"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "4.0" "1.0"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "5.0" "0.0"
-HSET RULE#DE#US#MINEDU_ZA#v2025-01 "6.0" "0.0"
-
-# 1.5 Regla US → US (Identidad - letras a GPA)
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "A" "4.0"
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "A-" "3.7"
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "B+" "3.3"
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "B" "3.0"
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "B-" "2.7"
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "C+" "2.3"
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "C" "2.0"
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "C-" "1.7"
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "D+" "1.3"
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "D" "1.0"
-HSET RULE#US#US#MINEDU_ZA#v2025-01 "F" "0.0"
+# 1.4 Regla US → ZA7 (GPA estadounidense a escala 1-7 sudafricana)
+HSET regla:US#ZA7:MINISTERIO:SECUNDARIO:2025:1 from "US" to "ZA7" version "1" organismo "MINISTERIO" nivel "SECUNDARIO" anio "2025" metodo "tabla" vigencia_desde "2025-01-01" vigencia_hasta "2025-12-31" mapping "{\"0.0\":\"1\",\"1.0\":\"2\",\"1.5\":\"3\",\"2.0\":\"4\",\"2.5\":\"4\",\"3.0\":\"5\",\"3.3\":\"5\",\"3.5\":\"6\",\"3.7\":\"6\",\"4.0\":\"7\"}"
 
 
-# 2. METADATOS DE REGLAS (fechas, organismos, etc.)
+# 2. REGLAS ACTIVAS (apuntadores a la versión actual)
+# Formato: regla_activa:FROM#ZA7:MINISTERIO:SECUNDARIO:ANIO
 # =========================================
 
-HSET RULEMETA#ZA#US#MINEDU_ZA#v2025-01 "valid_from" "2025-01-01"
-HSET RULEMETA#ZA#US#MINEDU_ZA#v2025-01 "valid_to" "2026-12-31"
-HSET RULEMETA#ZA#US#MINEDU_ZA#v2025-01 "organismo" "MINEDU_ZA"
-HSET RULEMETA#ZA#US#MINEDU_ZA#v2025-01 "normative_ref" "https://minedu.za/conversion/v2025"
-HSET RULEMETA#ZA#US#MINEDU_ZA#v2025-01 "created_at" "2025-01-01T00:00:00Z"
-HSET RULEMETA#ZA#US#MINEDU_ZA#v2025-01 "descripcion" "Conversión porcentaje ZA a GPA US"
-
-HSET RULEMETA#AR#US#MINEDU_ZA#v2025-01 "valid_from" "2025-01-01"
-HSET RULEMETA#AR#US#MINEDU_ZA#v2025-01 "valid_to" "2026-12-31"
-HSET RULEMETA#AR#US#MINEDU_ZA#v2025-01 "organismo" "MINEDU_ZA"
-HSET RULEMETA#AR#US#MINEDU_ZA#v2025-01 "normative_ref" "https://minedu.za/conversion/ar-us/v2025"
-HSET RULEMETA#AR#US#MINEDU_ZA#v2025-01 "created_at" "2025-01-01T00:00:00Z"
-HSET RULEMETA#AR#US#MINEDU_ZA#v2025-01 "descripcion" "Conversión escala 1-10 AR a GPA US"
-
-HSET RULEMETA#UK#US#MINEDU_ZA#v2026-01 "valid_from" "2026-01-01"
-HSET RULEMETA#UK#US#MINEDU_ZA#v2026-01 "valid_to" "2027-12-31"
-HSET RULEMETA#UK#US#MINEDU_ZA#v2026-01 "organismo" "MINEDU_ZA"
-HSET RULEMETA#UK#US#MINEDU_ZA#v2026-01 "normative_ref" "https://minedu.za/conversion/uk-us/v2026"
-HSET RULEMETA#UK#US#MINEDU_ZA#v2026-01 "created_at" "2026-01-01T00:00:00Z"
-HSET RULEMETA#UK#US#MINEDU_ZA#v2026-01 "descripcion" "Conversión letras UK (A*-E) a GPA US"
-
-HSET RULEMETA#DE#US#MINEDU_ZA#v2025-01 "valid_from" "2025-01-01"
-HSET RULEMETA#DE#US#MINEDU_ZA#v2025-01 "valid_to" "2026-12-31"
-HSET RULEMETA#DE#US#MINEDU_ZA#v2025-01 "organismo" "MINEDU_ZA"
-HSET RULEMETA#DE#US#MINEDU_ZA#v2025-01 "normative_ref" "https://minedu.za/conversion/de-us/v2025"
-HSET RULEMETA#DE#US#MINEDU_ZA#v2025-01 "created_at" "2025-01-01T00:00:00Z"
-HSET RULEMETA#DE#US#MINEDU_ZA#v2025-01 "descripcion" "Conversión escala alemana (1-6) a GPA US"
-
-HSET RULEMETA#US#US#MINEDU_ZA#v2025-01 "valid_from" "2025-01-01"
-HSET RULEMETA#US#US#MINEDU_ZA#v2025-01 "valid_to" "2026-12-31"
-HSET RULEMETA#US#US#MINEDU_ZA#v2025-01 "organismo" "MINEDU_ZA"
-HSET RULEMETA#US#US#MINEDU_ZA#v2025-01 "normative_ref" "https://minedu.za/conversion/us-us/v2025"
-HSET RULEMETA#US#US#MINEDU_ZA#v2025-01 "created_at" "2025-01-01T00:00:00Z"
-HSET RULEMETA#US#US#MINEDU_ZA#v2025-01 "descripcion" "Conversión letras US a GPA numérico"
+SET regla_activa:AR#ZA7:MINISTERIO:SECUNDARIO:2025 "1"
+SET regla_activa:UK#ZA7:MINISTERIO:SECUNDARIO:2025 "1"
+SET regla_activa:DE#ZA7:MINISTERIO:SECUNDARIO:2025 "1"
+SET regla_activa:US#ZA7:MINISTERIO:SECUNDARIO:2025 "1"
 
 
-# 3. REGLAS ACTIVAS (apuntadores a la versión actual)
+# 3. CONVERSIONES CACHEADAS (10 registros con TTL 24h = 86400 segundos)
+# Formato: conv:ID_CALIFICACION:ZA7:VERSION
 # =========================================
 
-HSET RULEACTIVE#ZA#US "organismo" "MINEDU_ZA"
-HSET RULEACTIVE#ZA#US "version" "v2025-01"
-HSET RULEACTIVE#ZA#US "updated_at" "2025-01-01T00:00:00Z"
+# 3.1 GR-2025-0001: AR 8 → ZA7 6
+SETEX conv:GR-2025-0001:ZA7:1 86400 "{\"za7\":6,\"from_system\":\"AR\",\"from_value\":\"8\",\"to_system\":\"ZA7\",\"to_value\":6,\"rule_version\":1,\"converted_at\":\"2025-03-10T14:30:00Z\"}"
 
-HSET RULEACTIVE#AR#US "organismo" "MINEDU_ZA"
-HSET RULEACTIVE#AR#US "version" "v2025-01"
-HSET RULEACTIVE#AR#US "updated_at" "2025-01-01T00:00:00Z"
+# 3.2 GR-2025-0002: AR 8 → ZA7 6
+SETEX conv:GR-2025-0002:ZA7:1 86400 "{\"za7\":6,\"from_system\":\"AR\",\"from_value\":\"8\",\"to_system\":\"ZA7\",\"to_value\":6,\"rule_version\":1,\"converted_at\":\"2025-03-11T11:15:00Z\"}"
 
-HSET RULEACTIVE#UK#US "organismo" "MINEDU_ZA"
-HSET RULEACTIVE#UK#US "version" "v2026-01"
-HSET RULEACTIVE#UK#US "updated_at" "2026-01-01T00:00:00Z"
+# 3.3 GR-2025-0003: AR 7 → ZA7 5
+SETEX conv:GR-2025-0003:ZA7:1 86400 "{\"za7\":5,\"from_system\":\"AR\",\"from_value\":\"7\",\"to_system\":\"ZA7\",\"to_value\":5,\"rule_version\":1,\"converted_at\":\"2025-03-12T10:30:00Z\"}"
 
-HSET RULEACTIVE#DE#US "organismo" "MINEDU_ZA"
-HSET RULEACTIVE#DE#US "version" "v2025-01"
-HSET RULEACTIVE#DE#US "updated_at" "2025-01-01T00:00:00Z"
+# 3.4 GR-2025-0004: US 4.0 → ZA7 7
+SETEX conv:GR-2025-0004:ZA7:1 86400 "{\"za7\":7,\"from_system\":\"US\",\"from_value\":\"4.0\",\"to_system\":\"ZA7\",\"to_value\":7,\"rule_version\":1,\"converted_at\":\"2025-03-13T09:45:00Z\"}"
 
-HSET RULEACTIVE#US#US "organismo" "MINEDU_ZA"
-HSET RULEACTIVE#US#US "version" "v2025-01"
-HSET RULEACTIVE#US#US "updated_at" "2025-01-01T00:00:00Z"
+# 3.5 GR-2025-0005: UK B → ZA7 5
+SETEX conv:GR-2025-0005:ZA7:1 86400 "{\"za7\":5,\"from_system\":\"UK\",\"from_value\":\"B\",\"to_system\":\"ZA7\",\"to_value\":5,\"rule_version\":1,\"converted_at\":\"2025-03-14T12:15:00Z\"}"
 
+# 3.6 GR-2024-0006: US 2.3 → ZA7 4
+SETEX conv:GR-2024-0006:ZA7:1 86400 "{\"za7\":4,\"from_system\":\"US\",\"from_value\":\"2.3\",\"to_system\":\"ZA7\",\"to_value\":4,\"rule_version\":1,\"converted_at\":\"2024-12-15T11:00:00Z\"}"
 
-# 4. CONVERSIONES CACHEADAS (10 registros con TTL 24h = 86400 segundos)
-# =========================================
+# 3.7 GR-2024-0007: AR 4 → ZA7 3
+SETEX conv:GR-2024-0007:ZA7:1 86400 "{\"za7\":3,\"from_system\":\"AR\",\"from_value\":\"4\",\"to_system\":\"ZA7\",\"to_value\":3,\"rule_version\":1,\"converted_at\":\"2024-12-20T14:20:00Z\"}"
 
-# 4.1 GR-2025-0001: ZA 75% → US 3.3 GPA
-RPUSH CONV#GR-2025-0001#US '{"from_system":"ZA","from_value":"75%","to_system":"US","to_value":3.3,"rule_used":"RULE#ZA#US#MINEDU_ZA#v2025-01","converted_at":"2025-03-10T14:30:00Z","ttl_expires":"2025-03-11T14:30:00Z"}'
-EXPIRE CONV#GR-2025-0001#US 86400
+# 3.8 GR-2024-0008: AR 8 → ZA7 6
+SETEX conv:GR-2024-0008:ZA7:1 86400 "{\"za7\":6,\"from_system\":\"AR\",\"from_value\":\"8\",\"to_system\":\"ZA7\",\"to_value\":6,\"rule_version\":1,\"converted_at\":\"2024-12-22T16:45:00Z\"}"
 
-# 4.2 GR-2025-0002: AR 8 → US 3.7 GPA
-RPUSH CONV#GR-2025-0002#US '{"from_system":"AR","from_value":"8","to_system":"US","to_value":3.7,"rule_used":"RULE#AR#US#MINEDU_ZA#v2025-01","converted_at":"2025-03-11T11:15:00Z","ttl_expires":"2025-03-12T11:15:00Z"}'
-EXPIRE CONV#GR-2025-0002#US 86400
+# 3.9 GR-2024-0009: UK A* → ZA7 7
+SETEX conv:GR-2024-0009:ZA7:1 86400 "{\"za7\":7,\"from_system\":\"UK\",\"from_value\":\"A*\",\"to_system\":\"ZA7\",\"to_value\":7,\"rule_version\":1,\"converted_at\":\"2024-12-25T11:35:00Z\"}"
 
-# 4.3 GR-2025-0003: ZA 68% → US 3.0 GPA
-RPUSH CONV#GR-2025-0003#US '{"from_system":"ZA","from_value":"68%","to_system":"US","to_value":3.0,"rule_used":"RULE#ZA#US#MINEDU_ZA#v2025-01","converted_at":"2025-03-12T10:30:00Z","ttl_expires":"2025-03-13T10:30:00Z"}'
-EXPIRE CONV#GR-2025-0003#US 86400
-
-# 4.4 GR-2025-0004: US A → US 4.0 GPA (identidad)
-RPUSH CONV#GR-2025-0004#US '{"from_system":"US","from_value":"A","to_system":"US","to_value":4.0,"rule_used":"RULE#US#US#MINEDU_ZA#v2025-01","converted_at":"2025-03-13T09:45:00Z","ttl_expires":"2025-03-14T09:45:00Z"}'
-EXPIRE CONV#GR-2025-0004#US 86400
-
-# 4.5 GR-2025-0005: UK B → US 3.3 GPA
-RPUSH CONV#GR-2025-0005#US '{"from_system":"UK","from_value":"B","to_system":"US","to_value":3.3,"rule_used":"RULE#UK#US#MINEDU_ZA#v2026-01","converted_at":"2025-03-14T12:15:00Z","ttl_expires":"2025-03-15T12:15:00Z"}'
-EXPIRE CONV#GR-2025-0005#US 86400
-
-# 4.6 GR-2024-0006: US C+ → US 2.3 GPA (identidad)
-RPUSH CONV#GR-2024-0006#US '{"from_system":"US","from_value":"C+","to_system":"US","to_value":2.3,"rule_used":"RULE#US#US#MINEDU_ZA#v2025-01","converted_at":"2024-12-15T11:00:00Z","ttl_expires":"2024-12-16T11:00:00Z"}'
-EXPIRE CONV#GR-2024-0006#US 86400
-
-# 4.7 GR-2024-0007: AR 4 → US 0.0 GPA (desaprobado)
-RPUSH CONV#GR-2024-0007#US '{"from_system":"AR","from_value":"4","to_system":"US","to_value":0.0,"rule_used":"RULE#AR#US#MINEDU_ZA#v2025-01","converted_at":"2024-12-20T14:20:00Z","ttl_expires":"2024-12-21T14:20:00Z"}'
-EXPIRE CONV#GR-2024-0007#US 86400
-
-# 4.8 GR-2024-0008: ZA 82% → US 3.7 GPA
-RPUSH CONV#GR-2024-0008#US '{"from_system":"ZA","from_value":"82%","to_system":"US","to_value":3.7,"rule_used":"RULE#ZA#US#MINEDU_ZA#v2025-01","converted_at":"2024-12-22T16:45:00Z","ttl_expires":"2024-12-23T16:45:00Z"}'
-EXPIRE CONV#GR-2024-0008#US 86400
-
-# 4.9 GR-2024-0009: UK A* → US 4.0 GPA
-RPUSH CONV#GR-2024-0009#US '{"from_system":"UK","from_value":"A*","to_system":"US","to_value":4.0,"rule_used":"RULE#UK#US#MINEDU_ZA#v2026-01","converted_at":"2024-12-25T11:35:00Z","ttl_expires":"2024-12-26T11:35:00Z"}'
-EXPIRE CONV#GR-2024-0009#US 86400
-
-# 4.10 GR-2024-0010: DE 2.3 → US 3.0 GPA
-RPUSH CONV#GR-2024-0010#US '{"from_system":"DE","from_value":"2.3","to_system":"US","to_value":3.0,"rule_used":"RULE#DE#US#MINEDU_ZA#v2025-01","converted_at":"2024-12-28T14:00:00Z","ttl_expires":"2024-12-29T14:00:00Z"}'
-EXPIRE CONV#GR-2024-0010#US 86400
+# 3.10 GR-2024-0010: DE 2.3 → ZA7 5
+SETEX conv:GR-2024-0010:ZA7:1 86400 "{\"za7\":5,\"from_system\":\"DE\",\"from_value\":\"2.3\",\"to_system\":\"ZA7\",\"to_value\":5,\"rule_version\":1,\"converted_at\":\"2024-12-28T14:00:00Z\"}"
 
 
 # =========================================
 # VERIFICACIÓN (estos comandos son informativos)
 # =========================================
-# keys RULE*              → 5 reglas
-# keys RULEMETA*          → 5 metadatas
-# keys RULEACTIVE*        → 5 activos
-# keys CONV*              → 10 conversiones cacheadas
+# KEYS regla:*                   → 4 reglas
+# KEYS regla_activa:*            → 4 activos
+# KEYS conv:*                    → 10 conversiones cacheadas
+# =========================================
+
+# EJEMPLO DE USO:
+# 1. GET regla_activa:AR#ZA7:MINISTERIO:SECUNDARIO:2025   → devuelve "1"
+# 2. HGETALL regla:AR#ZA7:MINISTERIO:SECUNDARIO:2025:1    → devuelve la regla completa
+# 3. GET conv:GR-2025-0001:ZA7:1                          → devuelve la conversión cacheada
 # =========================================

@@ -75,7 +75,7 @@ MERGE (e8:Estudiante {
   student_id: 'STU-0008',
   full_name: 'Theo Samaan',
   dob: date('2005-12-11'),
-  nationality: 'ZA'
+  nationality: 'DE'
 });
 
 MERGE (e9:Estudiante {
@@ -101,7 +101,7 @@ MERGE (i1:Institucion {
   name: 'Cape Town Central High',
   country: 'ZA',
   region: 'Western Cape',
-  codigo_sistema: 'ZA'
+  codigo_sistema: 'ZA7'
 });
 
 MERGE (i2:Institucion {
@@ -109,7 +109,7 @@ MERGE (i2:Institucion {
   name: 'Pretoria Academy',
   country: 'ZA',
   region: 'Gauteng',
-  codigo_sistema: 'ZA'
+  codigo_sistema: 'ZA7'
 });
 
 MERGE (i3:Institucion {
@@ -167,7 +167,7 @@ MERGE (i8:Institucion {
 MERGE (m1:Materia {
   subject_id: 'SUB-MATH-ZA',
   name: 'Mathematics',
-  system: 'ZA',
+  system: 'ZA7',
   course_code: 'MATH-101-ZA'
 });
 
@@ -181,7 +181,7 @@ MERGE (m2:Materia {
 MERGE (m3:Materia {
   subject_id: 'SUB-ENG-ZA',
   name: 'English',
-  system: 'ZA',
+  system: 'ZA7',
   course_code: 'ENG-101-ZA'
 });
 
@@ -216,7 +216,7 @@ MERGE (m7:Materia {
 MERGE (m8:Materia {
   subject_id: 'SUB-CS-ZA',
   name: 'Computer Science',
-  system: 'ZA',
+  system: 'ZA7',
   course_code: 'CS-101-ZA'
 });
 
@@ -240,7 +240,7 @@ MERGE (m10:Materia {
 
 MERGE (gr1:Calificacion {
   record_id: 'GR-2025-0001',
-  system: 'ZA',
+  system: 'ZA7',
   scale_type: 'percentage',
   grade_value: '75%',
   numeric_value: 75.0,
@@ -264,7 +264,7 @@ MERGE (gr2:Calificacion {
 
 MERGE (gr3:Calificacion {
   record_id: 'GR-2025-0003',
-  system: 'ZA',
+  system: 'ZA7',
   scale_type: 'percentage',
   grade_value: '68%',
   numeric_value: 68.0,
@@ -324,7 +324,7 @@ MERGE (gr7:Calificacion {
 
 MERGE (gr8:Calificacion {
   record_id: 'GR-2024-0008',
-  system: 'ZA',
+  system: 'ZA7',
   scale_type: 'percentage',
   grade_value: '82%',
   numeric_value: 82.0,
@@ -428,13 +428,13 @@ MERGE (e)-[:CURSO {record_id: 'GR-2024-0010', academic_year: 2024, term: 'T4', a
 
 // 6.3 ASISTIO: Estudiante → Institucion
 MATCH (e:Estudiante {student_id: 'STU-0001'}), (i:Institucion {institution_id: 'INS-001'})
-MERGE (e)-[:ASISTIO {academic_year: 2025, term: 'T1', system: 'ZA'}]->(i);
+MERGE (e)-[:ASISTIO {academic_year: 2025, term: 'T1', system: 'ZA7'}]->(i);
 
 MATCH (e:Estudiante {student_id: 'STU-0002'}), (i:Institucion {institution_id: 'INS-003'})
 MERGE (e)-[:ASISTIO {academic_year: 2025, term: 'T1', system: 'AR'}]->(i);
 
 MATCH (e:Estudiante {student_id: 'STU-0003'}), (i:Institucion {institution_id: 'INS-002'})
-MERGE (e)-[:ASISTIO {academic_year: 2025, term: 'T1', system: 'ZA'}]->(i);
+MERGE (e)-[:ASISTIO {academic_year: 2025, term: 'T1', system: 'ZA7'}]->(i);
 
 MATCH (e:Estudiante {student_id: 'STU-0004'}), (i:Institucion {institution_id: 'INS-005'})
 MERGE (e)-[:ASISTIO {academic_year: 2025, term: 'T1', system: 'US'}]->(i);
@@ -449,7 +449,7 @@ MATCH (e:Estudiante {student_id: 'STU-0007'}), (i:Institucion {institution_id: '
 MERGE (e)-[:ASISTIO {academic_year: 2024, term: 'T4', system: 'AR'}]->(i);
 
 MATCH (e:Estudiante {student_id: 'STU-0008'}), (i:Institucion {institution_id: 'INS-001'})
-MERGE (e)-[:ASISTIO {academic_year: 2024, term: 'T4', system: 'ZA'}]->(i);
+MERGE (e)-[:ASISTIO {academic_year: 2024, term: 'T4', system: 'ZA7'}]->(i);
 
 MATCH (e:Estudiante {student_id: 'STU-0009'}), (i:Institucion {institution_id: 'INS-007'})
 MERGE (e)-[:ASISTIO {academic_year: 2024, term: 'T4', system: 'UK'}]->(i);

@@ -37,7 +37,7 @@ INSERT INTO rf4_fact_grades_by_region_year_system (
   region, academic_year, system, institution_id, subject_id, event_ts, 
   record_id, student_id, grade_raw, grade_norm_0_100, passed
 ) VALUES (
-  'Western Cape', 2025, 'ZA', 'INS-001', 'SUB-MATH-ZA', '2025-03-10 14:22:00+0000',
+  'Western Cape', 2025, 'ZA7', 'INS-001', 'SUB-MATH-ZA', '2025-03-10 14:22:00+0000',
   'GR-2025-0001', 'STU-0001', '75%', 75.0, true
 );
 
@@ -55,7 +55,7 @@ INSERT INTO rf4_fact_grades_by_region_year_system (
   region, academic_year, system, institution_id, subject_id, event_ts, 
   record_id, student_id, grade_raw, grade_norm_0_100, passed
 ) VALUES (
-  'Gauteng', 2025, 'ZA', 'INS-002', 'SUB-ENG-ZA', '2025-03-12 10:15:00+0000',
+  'Gauteng', 2025, 'ZA7', 'INS-002', 'SUB-ENG-ZA', '2025-03-12 10:15:00+0000',
   'GR-2025-0003', 'STU-0003', '68%', 68.0, true
 );
 
@@ -100,7 +100,7 @@ INSERT INTO rf4_fact_grades_by_region_year_system (
   region, academic_year, system, institution_id, subject_id, event_ts, 
   record_id, student_id, grade_raw, grade_norm_0_100, passed
 ) VALUES (
-  'Western Cape', 2024, 'ZA', 'INS-001', 'SUB-CS-ZA', '2024-12-22 16:30:00+0000',
+  'Western Cape', 2024, 'ZA7', 'INS-001', 'SUB-CS-ZA', '2024-12-22 16:30:00+0000',
   'GR-2024-0008', 'STU-0008', '82%', 82.0, true
 );
 
@@ -127,12 +127,12 @@ INSERT INTO rf4_fact_grades_by_region_year_system (
 -- Promedios pre-calculados por región/año/sistema/materia/institución
 -- ----------------------------------------------------------------------------
 
--- Agregado 1: Western Cape / 2025 / ZA / MATH / INS-001
+-- Agregado 1: Western Cape / 2025 / ZA7 / MATH / INS-001
 INSERT INTO promedio_por_region_anio (
   region, anio, codigo_sistema, id_materia, id_institucion,
   n, suma, suma_cuadrados, actualizado_en
 ) VALUES (
-  'Western Cape', 2025, 'ZA', 'SUB-MATH-ZA', 'INS-001',
+  'Western Cape', 2025, 'ZA7', 'SUB-MATH-ZA', 'INS-001',
   1, 75.0, 5625.0, toTimestamp(now())
 );
 
@@ -145,12 +145,12 @@ INSERT INTO promedio_por_region_anio (
   1, 80.0, 6400.0, toTimestamp(now())
 );
 
--- Agregado 3: Gauteng / 2025 / ZA / ENG / INS-002
+-- Agregado 3: Gauteng / 2025 / ZA7 / ENG / INS-002
 INSERT INTO promedio_por_region_anio (
   region, anio, codigo_sistema, id_materia, id_institucion,
   n, suma, suma_cuadrados, actualizado_en
 ) VALUES (
-  'Gauteng', 2025, 'ZA', 'SUB-ENG-ZA', 'INS-002',
+  'Gauteng', 2025, 'ZA7', 'SUB-ENG-ZA', 'INS-002',
   1, 68.0, 4624.0, toTimestamp(now())
 );
 
@@ -190,12 +190,12 @@ INSERT INTO promedio_por_region_anio (
   1, 40.0, 1600.0, toTimestamp(now())
 );
 
--- Agregado 8: Western Cape / 2024 / ZA / CS / INS-001
+-- Agregado 8: Western Cape / 2024 / ZA7 / CS / INS-001
 INSERT INTO promedio_por_region_anio (
   region, anio, codigo_sistema, id_materia, id_institucion,
   n, suma, suma_cuadrados, actualizado_en
 ) VALUES (
-  'Western Cape', 2024, 'ZA', 'SUB-CS-ZA', 'INS-001',
+  'Western Cape', 2024, 'ZA7', 'SUB-CS-ZA', 'INS-001',
   1, 82.0, 6724.0, toTimestamp(now())
 );
 
