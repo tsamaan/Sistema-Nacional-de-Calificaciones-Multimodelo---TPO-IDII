@@ -53,10 +53,9 @@ echo ""
 echo "4️⃣  CASSANDRA"
 echo "----------------------------------------------------------------------"
 if confirmar "Cassandra"; then
-  docker exec edugrade-cassandra cqlsh -u cassandra -p cassandra -e "TRUNCATE edugrade_analitica.promedio_por_region_anio;" 2>&1 | grep -v "^$" || echo "   ✅ promedio_por_region_anio truncada"
-  docker exec edugrade-cassandra cqlsh -u cassandra -p cassandra -e "TRUNCATE edugrade.rf4_fact_grades_by_region_year_system;" 2>&1 | grep -v "^$" || echo "   ✅ rf4_fact_grades_by_region_year_system truncada"
-  docker exec edugrade-cassandra cqlsh -u cassandra -p cassandra -e "TRUNCATE edugrade_auditoria.registro_auditoria_por_entidad_mes;" 2>&1 | grep -v "^$" || echo "   ✅ registro_auditoria_por_entidad_mes truncada"
-  docker exec edugrade-cassandra cqlsh -u cassandra -p cassandra -e "TRUNCATE edugrade_auditoria.rf5_audit_timeline_by_entity_month;" 2>&1 | grep -v "^$" || echo "   ✅ rf5_audit_timeline_by_entity_month truncada"
+  docker exec edugrade-cassandra cqlsh -u cassandra -p cassandra -e "TRUNCATE edugrade_analitica.rf4_fact_grades_by_region_year_system;" 2>&1 | grep -v "Warning" | grep -v "^$" || echo "   ✅ rf4_fact_grades_by_region_year_system truncada"
+  docker exec edugrade-cassandra cqlsh -u cassandra -p cassandra -e "TRUNCATE edugrade_analitica.promedio_por_region_anio;" 2>&1 | grep -v "Warning" | grep -v "^$" || echo "   ✅ promedio_por_region_anio truncada"
+  docker exec edugrade-cassandra cqlsh -u cassandra -p cassandra -e "TRUNCATE edugrade_auditoria.registro_auditoria_por_entidad_mes;" 2>&1 | grep -v "Warning" | grep -v "^$" || echo "   ✅ registro_auditoria_por_entidad_mes truncada"
   echo "   ✅ Cassandra limpio"
 fi
 
